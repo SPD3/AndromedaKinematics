@@ -30,6 +30,8 @@ public class KinematicsTester {
 		createPositiveTrajectoryToNegativeTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
 		
 		createPositiveTrajectoryToPositiveTrajectoryGreaterThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+		
+		createPositiveTrajectoryToPositiveTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
 	}
 
 	private static void createPositiveTrajectoryGreaterThanTheDistanceCoveredWhileAcceleratingCase() {
@@ -41,6 +43,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -60,6 +63,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -78,7 +82,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
-
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -97,6 +101,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -116,7 +121,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
-
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -137,6 +142,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -156,6 +162,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -175,6 +182,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -194,7 +202,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
-		printTrajectory(myPath);
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -214,7 +222,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
-		printTrajectory(myPath);
+		
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -314,7 +322,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
-		printTrajectory(myPath);
+	
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -415,9 +423,9 @@ public class KinematicsTester {
 		for (int i = 0; i < Key.getTrajectoryVector().size(); i++) {
 			TrajectoryPoint currentPoint = Key.getTrajectoryVector().get(i);
 			if (currentPoint.m_acceleration > (Key.getmaxAcceleration()
-					* KinematicsSimpler.getTrajectoryPointInterval())
+					* KinematicsSimpler.getTrajectoryPointInterval() + 0.1)
 					|| currentPoint.m_acceleration < (-Key.getmaxAcceleration()
-							* KinematicsSimpler.getTrajectoryPointInterval())) {
+							* KinematicsSimpler.getTrajectoryPointInterval() - 0.1)) {
 				errMessage = "The Current Acceleration at time: " + currentPoint.m_timestamp
 						+ " is above the maximum acceleration!";
 				invalidAccelerationException = kinematicsTester.new InvalidAccelerationException(errMessage);
@@ -505,8 +513,14 @@ public class KinematicsTester {
 					+ Key.getTrajectoryVector().get(i).m_position + ", " + Key.getTrajectoryVector().get(i).m_timestamp
 					+ "]");
 		}
-		System.out.println(
-				"The final Setpoint was: " + Key.getSetpointVector().get(Key.getSetpointVector().size() - 1).getm_X());
+		System.out.print("The Setpoints are: ");
+		for (int i = 0; i < Key.getSetpointVector().size(); i++) {
+			if(i == 0) {
+				System.out.print(Key.getSetpointVector().get(i).getm_X());
+			}else {
+				System.out.print(", " + Key.getSetpointVector().get(i).getm_X());
+			}
+		}
 		System.out.println("");
 	}
 }
