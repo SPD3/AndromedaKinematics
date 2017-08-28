@@ -20,6 +20,16 @@ public class KinematicsTester {
 		createPositiveTrajectoryToNegativeTrajectoryGreaterThanTwiceTheDistanceCoveredWhileAcceleratingCase();
 
 		createNegativeTrajectoryToPositiveTrajectoryGreaterThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+
+		createPositiveTrajectoryToNegativeTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+
+		createNegativeTrajectoryToPositiveTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+
+		createNegativeTrajectoryToPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+
+		createPositiveTrajectoryToNegativeTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+		
+		createPositiveTrajectoryToPositiveTrajectoryGreaterThanTwiceTheDistanceCoveredWhileAcceleratingCase();
 	}
 
 	private static void createPositiveTrajectoryGreaterThanTheDistanceCoveredWhileAcceleratingCase() {
@@ -42,17 +52,16 @@ public class KinematicsTester {
 	}
 
 	private static void createPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
-		Path myPath1 = m_kinematicsSmallSteps.new Path();
+		Path myPath = m_kinematicsSmallSteps.new Path();
 		KinematicsTester kinematicsTester1 = new KinematicsTester();
 		try {
-			m_kinematicsSmallSteps.addPointToPath(myPath1, m_kinematicsSmallSteps.new Point(2));
-			m_kinematicsSmallSteps.createTrajectory(myPath1, 2.0, 0.5);
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(6));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
-
 		try {
-			checkTrajectoryPath(myPath1, kinematicsTester1);
+			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
 				| InvalidFinalPosition e) {
 			// TODO Auto-generated catch block
@@ -69,6 +78,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
+
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -79,16 +89,16 @@ public class KinematicsTester {
 	}
 
 	private static void createNegativeTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
-		Path myPath1 = m_kinematicsSmallSteps.new Path();
+		Path myPath = m_kinematicsSmallSteps.new Path();
 		KinematicsTester kinematicsTester1 = new KinematicsTester();
 		try {
-			m_kinematicsSmallSteps.addPointToPath(myPath1, m_kinematicsSmallSteps.new Point(-2));
-			m_kinematicsSmallSteps.createTrajectory(myPath1, 2.0, 0.5);
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-6));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
 		try {
-			checkTrajectoryPath(myPath1, kinematicsTester1);
+			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
 				| InvalidFinalPosition e) {
 			// TODO Auto-generated catch block
@@ -106,6 +116,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
+
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
@@ -116,19 +127,18 @@ public class KinematicsTester {
 
 	}
 
-	private void createPositiveTrajectoryToNegativeTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
-		Path myPath1 = m_kinematicsSmallSteps.new Path();
+	private static void createPositiveTrajectoryToNegativeTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
 		KinematicsTester kinematicsTester1 = new KinematicsTester();
 		try {
-			m_kinematicsSmallSteps.addPointToPath(myPath1, m_kinematicsSmallSteps.new Point(10));
-			m_kinematicsSmallSteps.addPointToPath(myPath1, m_kinematicsSmallSteps.new Point(8));
-			m_kinematicsSmallSteps.createTrajectory(myPath1, 2.0, 0.5);
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(10));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(8));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
-
 		try {
-			checkTrajectoryPath(myPath1, kinematicsTester1);
+			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
 				| InvalidFinalPosition e) {
 			// TODO Auto-generated catch block
@@ -155,19 +165,18 @@ public class KinematicsTester {
 		}
 	}
 
-	private void createNegativeTrajectoryToPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
-		Path myPath1 = m_kinematicsSmallSteps.new Path();
+	private static void createNegativeTrajectoryToPositiveTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
 		KinematicsTester kinematicsTester1 = new KinematicsTester();
 		try {
-			m_kinematicsSmallSteps.addPointToPath(myPath1, m_kinematicsSmallSteps.new Point(-10));
-			m_kinematicsSmallSteps.addPointToPath(myPath1, m_kinematicsSmallSteps.new Point(-8));
-			m_kinematicsSmallSteps.createTrajectory(myPath1, 2.0, 0.5);
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-10));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-8));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
-		printTrajectory(myPath1);
 		try {
-			checkTrajectoryPath(myPath1, kinematicsTester1);
+			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
 				| InvalidFinalPosition e) {
 			// TODO Auto-generated catch block
@@ -175,6 +184,205 @@ public class KinematicsTester {
 		}
 	}
 
+	private static void createNegativeTrajectoryToPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-6));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-2));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void createPositiveTrajectoryToNegativeTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(6));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(2));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void createNegativeTrajectoryToNegativeTrajectoryGreaterThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-10));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-20));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void createNegativeTrajectoryToNegativeTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-10));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-12));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void createNegativeTrajectoryToNegativeTrajectory1stPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-6));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-20));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void createNegativeTrajectoryToNegativeTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-2));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-6));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private static void createPositiveTrajectoryToPositiveTrajectoryGreaterThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(10));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(20));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void createPositiveTrajectoryToPositiveTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(10));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(12));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void createPositiveTrajectoryToPositiveTrajectory1stPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(6));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(20));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void createPositiveTrajectoryToPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(2));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(6));
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private static void checkTrajectoryPath(Path Key, KinematicsTester kinematicsTester)
 			throws InvalidVelocityException, InvalidNextVelocityFromLastAcceleration, InvalidAccelerationException,
 			InvalidFinalPosition {

@@ -489,7 +489,7 @@ public class KinematicsSimpler {
 						nextVelocity = lastSetpoint.maxVelocity;
 					} else if (nextTime < lastSetpoint.startCruisingDeltaTime + previousTime + nextSetpointsEndTimes) {
 						
-						nextVelocity = lastSetpoint.vi + Key.maxAcceleration * nextTime;
+						nextVelocity = lastSetpoint.vi + Key.maxAcceleration * (nextTime - (setpoint.endDeltaTime + previousTime));
 					} else {
 						
 						nextVelocity = lastSetpoint.vf + Key.maxAcceleration
@@ -509,7 +509,7 @@ public class KinematicsSimpler {
 				// velocity
 				trajectoryPoint.m_acceleration = (nextVelocity * directionConstant) - trajectoryPoint.m_currentVelocity;
 
-				if (trajectoryPoint.m_timestamp == -1.0) {
+				if (trajectoryPoint.m_timestamp == 6.5) {
 					System.out.println("");
 					System.out.println("trajectoryPoint.m_timestamp: " + trajectoryPoint.m_timestamp);
 					System.out.println("setpoint.startCruisingDeltaTime: " + setpoint.startCruisingDeltaTime);
@@ -533,6 +533,7 @@ public class KinematicsSimpler {
 					System.out.println("lastSetpoint.maxVelocity: " + lastSetpoint.maxVelocity);
 					System.out.println("previousTime: " + previousTime);
 					System.out.println("setpoint.m_x: " + setpoint.m_x);
+					System.out.println("lastSetpoint.m_x: " + lastSetpoint.m_x);
 					System.out.println("");
 				}
 				
