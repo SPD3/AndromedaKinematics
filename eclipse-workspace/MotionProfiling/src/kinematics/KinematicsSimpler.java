@@ -803,7 +803,7 @@ public class KinematicsSimpler {
 				// velocity
 				trajectoryPoint.m_acceleration = (nextVelocity * directionConstant) - trajectoryPoint.m_currentVelocity;
 
-				if (trajectoryPoint.m_timestamp == 7.0) {
+				if (trajectoryPoint.m_timestamp == -1.0) {
 					System.out.println("");
 					System.out.println("currentTime: " + currentTime);
 					System.out.println("trajectoryPoint.m_timestamp: " + trajectoryPoint.m_timestamp);
