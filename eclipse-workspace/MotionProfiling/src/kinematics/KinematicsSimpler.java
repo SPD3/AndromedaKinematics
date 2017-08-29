@@ -380,13 +380,16 @@ public class KinematicsSimpler {
 				setpoint.vf = 0.0;
 			} else if ((traveledInAPositiveDirection && willTravelInAPositiveDirection)
 					|| (!traveledInAPositiveDirection && !willTravelInAPositiveDirection)) {
+				Key.setpointVector.remove(i1);
+				i1--;
+				continue;
 				/*
 				 * This max velocity reachable is different from the theoretical max velocity
 				 * reachable back in the method createTrajectory because it does account for the
 				 * max velocity either specified inside of Key or inside of the maximum velocity
 				 * vector
 				 */
-				double maxVelocityReachable;
+				/*double maxVelocityReachable;
 				double distanceTraveledWhileAcceleratingToMaxVelocity;
 
 				setpoint.maxVelocity = Key.maxVelocity;
@@ -401,7 +404,7 @@ public class KinematicsSimpler {
 				 * 
 				 * Else assign it to the final velocity reached during the process of
 				 * accelerating to the setpoint
-				 */
+				 
 				Point nextPoint = new Point(0, 0);
 				try {
 					nextPoint = setpointVector.get(i1 + 1);
@@ -429,7 +432,7 @@ public class KinematicsSimpler {
 					} catch (ArrayIndexOutOfBoundsException a) {
 
 					}
-				}
+				}*/
 
 			} else {
 				setpoint.vf = 0.0;
