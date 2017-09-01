@@ -385,12 +385,27 @@ public class KinematicsSimpler {
 			 * 
 			 * Else you will be reversing direction so your vf will be 0.0
 			 */
+			Point nextSetpoint = new Point(0,0);
+			try {
+				nextSetpoint = setpointVector.get(i1+1);
+				
+			}catch(ArrayIndexOutOfBoundsException a) {
+				
+			}
+			if(nextSetpoint.maxVelocity >= Key.maxVelocity || nextSetpoint.maxVelocity <= 0.0) {
+				nextSetpoint.maxVelocity = Key.maxVelocity;
+			}
+			
 			if (i1 == (setpointVector.size() - 1)) {
 				setpoint.vf = 0.0;
 			} else if ((traveledInAPositiveDirection && willTravelInAPositiveDirection)
 					|| (!traveledInAPositiveDirection && !willTravelInAPositiveDirection)) {
 				if(setpoint.maxVelocity != Key.maxVelocity) {
-					setpoint.vf = setpoint.maxVelocity;
+					if(nextSetpoint.maxVelocity != Key.maxVelocity) {
+						setpoint.vf = nextSetpoint.maxVelocity;
+					}else {
+						setpoint.vf = setpoint.maxVelocity;
+					}
 				}else {
 					Key.setpointVector.remove(i1);
 					i1--;
