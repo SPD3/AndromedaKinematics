@@ -9,6 +9,7 @@ public class KinematicsTester {
 	static KinematicsSimpler m_kinematicsSmallSteps = new KinematicsSimpler();
 
 	public static void main(String[] args) {
+		
 		createPositiveTrajectoryGreaterThanTheDistanceCoveredWhileAcceleratingCase();
 
 		createPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
@@ -62,6 +63,13 @@ public class KinematicsTester {
 		createNegativeTrajectoryToNegativeTrajectoryLessThanTheDistanceCoveredWhileAcceleratingCase();
 		
 		createNegativeTrajectoryToNegativeTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+		
+		
+		createPositiveTrajectoryWithACustomMaxAcceleration();
+		
+		createNegativeTrajectoryWithACustomMaxAcceleration();
+		
+		create2PositivePointTrajectorysWithACustomMaxAccelerationForFirstPoint();
 		
 		}
 
@@ -557,12 +565,97 @@ public class KinematicsTester {
 		}
 	}
 	
+	private static void createPositiveTrajectoryWithACustomMaxAcceleration() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(10), 1.0);
+			
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition | InvalidTrajectoryLogic e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void createNegativeTrajectoryWithACustomMaxAcceleration() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(-10), 1.0);
+			
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition | InvalidTrajectoryLogic e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void create2PositivePointTrajectorysWithACustomMaxAccelerationForFirstPoint() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(10), 1.0);
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(20));
+			
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition | InvalidTrajectoryLogic e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void create2PositivePointTrajectorysWithACustomMaxAccelerationForSecondPoint() {
+		Path myPath = m_kinematicsSmallSteps.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+		try {
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(10));
+			m_kinematicsSmallSteps.addPointToPath(myPath, m_kinematicsSmallSteps.new Point(20), 1.0);
+			
+			m_kinematicsSmallSteps.createTrajectory(myPath, 2.0, 0.5);
+		} catch (InvalidDimentionException e) {
+			e.printStackTrace();
+		}
+		printTrajectory(myPath);
+		
+		try {
+			checkTrajectoryPath(myPath, kinematicsTester1);
+		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
+				| InvalidFinalPosition | InvalidTrajectoryLogic e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private static void checkTrajectoryPath(Path Key, KinematicsTester kinematicsTester)
 			throws InvalidVelocityException, InvalidNextVelocityFromLastAcceleration, InvalidAccelerationException,
 			InvalidFinalPosition, InvalidTrajectoryLogic {
+		
 		checkAcceleration(Key, kinematicsTester);
+		
 		checkVelocity(Key, kinematicsTester);
+		
+		checkVelocityTakingCustomMaxVelocityIntoAccount(Key, kinematicsTester);
+		
 		checkFinalPosition(Key, kinematicsTester);
+		
 		checkTrajectoryLogic(Key, kinematicsTester);
 	}
 
@@ -639,6 +732,28 @@ public class KinematicsTester {
 				invalidNextVelocityFromLastAcceleration = kinematicsTester.new InvalidNextVelocityFromLastAcceleration(
 						errMessage);
 				throw invalidNextVelocityFromLastAcceleration;
+			}
+		}
+	}
+	
+	private static void checkVelocityTakingCustomMaxVelocityIntoAccount(Path Key, KinematicsTester kinematicsTester) throws InvalidVelocityException {
+		InvalidVelocityException invalidVelocityException;
+		String errMessage;
+		int currentTrajectoryIndex = 0;
+		for(int i=0; i < Key.getSetpointVector().size(); i++) {
+			Point setpoint = Key.getSetpointVector().get(i);
+			for(int i1 = currentTrajectoryIndex; i1 < Key.getTrajectoryVector().size(); i1++) {
+				TrajectoryPoint trajectoryPoint = Key.getTrajectoryVector().get(i1);
+				
+				if(Math.abs(setpoint.getMaxVelocity()) < Math.abs(trajectoryPoint.m_currentVelocity)) {
+					errMessage = "The velocity at time: " + trajectoryPoint.m_timestamp + " is above the maximum velocity specified by the user which is: " + setpoint.getMaxVelocity();
+					invalidVelocityException = kinematicsTester.new InvalidVelocityException(errMessage);
+					throw invalidVelocityException;
+				}
+				if(trajectoryPoint.m_position - setpoint.getm_X() < 0.001 && trajectoryPoint.m_position - setpoint.getm_X() > -0.001) {
+					break;
+				}
+				currentTrajectoryIndex++;
 			}
 		}
 	}

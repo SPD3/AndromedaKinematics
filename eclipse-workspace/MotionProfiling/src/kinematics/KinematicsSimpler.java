@@ -2,6 +2,8 @@ package kinematics;
 
 import java.util.Vector;
 
+import javax.print.attribute.standard.MediaSize.NA;
+
 import kinematics.Kinematics.Path;
 import kinematics.Kinematics.Point;
 
@@ -108,6 +110,10 @@ public class KinematicsSimpler {
 		public double getm_Y() {
 			return m_y;
 		}
+		
+		public double getMaxVelocity() {
+			return maxVelocity;
+		}
 
 		double startCruisingDeltaTime;
 		double endCruisingDeltaTime;
@@ -169,6 +175,7 @@ public class KinematicsSimpler {
 		if (point.getDim() == 2) {
 			splineFitNewPoints(Key);
 		}
+		point.maxVelocity = maxVelocity;
 		Key.setpointVector.add(point);
 	}
 
@@ -257,23 +264,23 @@ public class KinematicsSimpler {
 			 * will be reached and pretend that you are cruising for 0 seconds
 			 */
 
-			if (theoreticalMaxVelocity > Key.maxVelocity) {
-				double distanceAccelerating = getDistanceTraveledWhileAccelerating(setpoint.vi, Key.maxVelocity,
+			if (theoreticalMaxVelocity > setpoint.maxVelocity) {
+				double distanceAccelerating = getDistanceTraveledWhileAccelerating(setpoint.vi, setpoint.maxVelocity,
 						Key.maxAcceleration);
 
-				setpoint.startCruisingDeltaTime = (Key.maxVelocity - setpoint.vi) / Key.maxAcceleration;
+				setpoint.startCruisingDeltaTime = (setpoint.maxVelocity - setpoint.vi) / Key.maxAcceleration;
 
-				double endCruisingDeltaTimeFromEnd = Math.abs((setpoint.vf - Key.maxVelocity) / Key.maxAcceleration);
+				double endCruisingDeltaTimeFromEnd = Math.abs((setpoint.vf - setpoint.maxVelocity) / Key.maxAcceleration);
 
-				double distanceDecelerating = getDistanceTraveledWhileAccelerating(Key.maxVelocity, setpoint.vf,
+				double distanceDecelerating = getDistanceTraveledWhileAccelerating(setpoint.maxVelocity, setpoint.vf,
 						Key.maxAcceleration);
 
 				double distanceCruising = (setpoint.m_x - lastSetpoint.m_x)
 						- (distanceAccelerating + distanceDecelerating);
 				setpoint.endCruisingDeltaTime = Math
-						.abs((distanceCruising / Key.maxVelocity) + setpoint.startCruisingDeltaTime);
+						.abs((distanceCruising / setpoint.maxVelocity) + setpoint.startCruisingDeltaTime);
 				setpoint.endDeltaTime = setpoint.endCruisingDeltaTime + endCruisingDeltaTimeFromEnd;
-				setpoint.maxVelocity = Key.maxVelocity;
+				setpoint.maxVelocity = setpoint.maxVelocity;
 
 			} else {
 				setpoint.startCruisingDeltaTime = Math.abs(halfWayTime);
@@ -312,7 +319,9 @@ public class KinematicsSimpler {
 			boolean traveledInAPositiveDirection;
 			boolean willTravelInAPositiveDirection;
 			Point setpoint = setpointVector.get(i1);
-			setpoint.maxVelocity = Key.maxVelocity;
+			if(setpoint.maxVelocity >= Key.maxVelocity || setpoint.maxVelocity <= 0.0) {
+				setpoint.maxVelocity = Key.maxVelocity;
+			}
 
 			/*
 			 * If this is the first setpoint being looked at set the vi to 0.0
@@ -380,9 +389,13 @@ public class KinematicsSimpler {
 				setpoint.vf = 0.0;
 			} else if ((traveledInAPositiveDirection && willTravelInAPositiveDirection)
 					|| (!traveledInAPositiveDirection && !willTravelInAPositiveDirection)) {
-				Key.setpointVector.remove(i1);
-				i1--;
-				continue;
+				if(setpoint.maxVelocity != Key.maxVelocity) {
+					setpoint.vf = setpoint.maxVelocity;
+				}else {
+					Key.setpointVector.remove(i1);
+					i1--;
+					continue;
+				}
 				/*
 				 * This max velocity reachable is different from the theoretical max velocity
 				 * reachable back in the method createTrajectory because it does account for the
