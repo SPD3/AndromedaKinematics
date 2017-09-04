@@ -79,6 +79,8 @@ public class KinematicsTester {
 		
 		createPositiveTrajectoryToPositiveTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingFirstPointWithCustomMaxVelocityCase();
 		
+		createPositiveTrajectoryToPositiveTrajectory2ndPointLessThanTheDistanceCoveredWhileAcceleratingFirstPointWithCustomMaxVelocityCase();
+		
 		}
 
 	private static void createPositiveTrajectoryGreaterThanTheDistanceCoveredWhileAcceleratingCase() {
@@ -678,7 +680,7 @@ public class KinematicsTester {
 		} catch (InvalidDimentionException e) {
 			e.printStackTrace();
 		}
-		
+		printTrajectory(myPath);
 		try {
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		} catch (InvalidVelocityException | InvalidNextVelocityFromLastAcceleration | InvalidAccelerationException
