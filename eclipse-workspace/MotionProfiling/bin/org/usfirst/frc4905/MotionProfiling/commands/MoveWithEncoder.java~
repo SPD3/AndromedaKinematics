@@ -69,7 +69,7 @@ public class MoveWithEncoder extends Command {
 		Robot.driveTrain.moveToEncoderRevolutions(trajectoryPoint.m_position * m_positionToEncoderRevolutionsRatio);
 		m_PIDOut = Robot.driveTrain.getEncoderPIDOutput();
 
-		Robot.driveTrain.setDriveControllers(trajectoryPoint.m_currentVelocity * m_velocityToMotorOutputRatio
+		Robot.driveTrain.setAllDriveControllers(trajectoryPoint.m_currentVelocity * m_velocityToMotorOutputRatio
 				+ trajectoryPoint.m_acceleration * m_accelerationToMotorOutputRatio + m_PIDOut);
 	}
 
