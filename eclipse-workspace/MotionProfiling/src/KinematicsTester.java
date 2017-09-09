@@ -102,6 +102,14 @@ public class KinematicsTester {
 			createPositiveTrajectoryToPositiveTrajectoryLessThanAndGreaterThanTheDistanceCoveredWhileAcceleratingSecondPointWithCustomMaxVelocityCase();
 			
 			createNegativeTrajectoryToNegativeTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingFirstPointWithCustomMaxVelocityCase();
+			
+			createNegativeTrajectoryToNegativeTrajectory2ndPointLessThanTheDistanceCoveredWhileAcceleratingFirstPointWithCustomMaxVelocityCase();
+			
+			createNegativeTrajectoryToNegativeTrajectory1stPointLessThanTwiceTheDistanceCoveredWhileAcceleratingFirstPointWithCustomMaxVelocityCase();
+			
+			TestCases();
+			
+			TestCases2();
 		} catch (InvalidDimentionException | InvalidVelocityException | InvalidNextVelocityFromLastAcceleration
 				| InvalidAccelerationException | InvalidFinalPosition | InvalidTrajectoryLogic e) {
 			// TODO Auto-generated catch block
@@ -170,7 +178,8 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
-
+		
+		
 		checkTrajectoryPath(myPath, kinematicsTester);
 
 	}
@@ -198,7 +207,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
-
+		
 		checkTrajectoryPath(myPath, kinematicsTester);
 
 	}
@@ -283,6 +292,8 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-12));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
 
+		
+		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -310,7 +321,8 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-20));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
-
+		
+		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -748,7 +760,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-11.5));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
 		
-		printTrajectory(myPath);
+		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -763,7 +775,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10.5));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
 		
-		printTrajectory(myPath);
+		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -778,11 +790,63 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-20));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
 		
+		
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void TestCases()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-0.25), 1.0);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-0.75));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1), 1.0);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1.5));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		
+		
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	private static void TestCases2()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(3));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(5));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		
 		printTrajectory(myPath);
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
 	
+	private static void TestCases3()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(3));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-3
+				));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
 	private static void checkTrajectoryPath(Path Key, KinematicsTester kinematicsTester)
 			throws InvalidVelocityException, InvalidNextVelocityFromLastAcceleration, InvalidAccelerationException,
 			InvalidFinalPosition, InvalidTrajectoryLogic {
