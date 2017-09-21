@@ -110,6 +110,10 @@ public class KinematicsTester {
 			TestCases();
 			
 			TestCases2();
+			
+			TestCases3();
+			
+			TestCases4();
 		} catch (InvalidDimentionException | InvalidVelocityException | InvalidNextVelocityFromLastAcceleration
 				| InvalidAccelerationException | InvalidFinalPosition | InvalidTrajectoryLogic e) {
 			// TODO Auto-generated catch block
@@ -406,7 +410,8 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(12));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
-
+		
+		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -448,7 +453,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(5));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(7));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
-
+		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -807,7 +812,6 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1.5));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
 		
-		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -823,7 +827,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
 		
-		printTrajectory(myPath);
+		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -843,10 +847,37 @@ public class KinematicsTester {
 				));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
 		
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void TestCases4()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(0.6676984378508238));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-14.74165235513177));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-17.15461976175742), 2.401903900952746);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10.775473113278561));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(23.287314160976056), 1.7480089052606078);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-23.00441246857718));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(19.36341833011983), 3.4463078435781904);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(9.850778313398827), 3.167239498524375);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(17.120057437440117), 0.3450556942188484);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(3.030929225820089), 0.8670591115037023);
+		m_kinematicsSimpler.createTrajectory(myPath, 5.0, 0.36515929984665874/KinematicsSimpler.getTrajectoryPointInterval());
+		
 		printTrajectory(myPath);
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
+	
+	private static void createRandomTestCases() {
+		
+	}
+
 	private static void checkTrajectoryPath(Path Key, KinematicsTester kinematicsTester)
 			throws InvalidVelocityException, InvalidNextVelocityFromLastAcceleration, InvalidAccelerationException,
 			InvalidFinalPosition, InvalidTrajectoryLogic {
@@ -975,8 +1006,8 @@ public class KinematicsTester {
 			for (int a = currentTrajectoryPointIndex; a < Key.getTrajectoryVector().size(); a++) {
 				currentTrajectoryPointIndex++;
 				trajectoryPoint = Key.getTrajectoryVector().get(a);
-				if (trajectoryPoint.m_position - setpoint.getm_X() < 0.01
-						&& trajectoryPoint.m_position - setpoint.getm_X() > -0.01) {
+				if (trajectoryPoint.m_position - setpoint.getm_X() < 0.001
+						&& trajectoryPoint.m_position - setpoint.getm_X() > -0.001) {
 
 					break;
 				}
