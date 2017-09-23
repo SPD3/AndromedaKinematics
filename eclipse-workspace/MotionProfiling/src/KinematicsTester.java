@@ -127,7 +127,9 @@ public class KinematicsTester {
 
 			TestCases9();
 			
-			// createRandomTestCases();
+			TestCases10();
+			
+			createRandomTestCases();
 		} catch (InvalidDimentionException | InvalidVelocityException | InvalidNextVelocityFromLastAcceleration
 				| InvalidAccelerationException | InvalidFinalPosition | InvalidTrajectoryLogic e) {
 			// TODO Auto-generated catch block
@@ -1009,6 +1011,31 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.createTrajectory(myPath, 4.080024724815174, 1.680675105230724);
 
+		
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	private static void TestCases10()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-43.77381014821977));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-45.977336529920905));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-0.5933286514858669),
+				0.3755657126204104);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-0.6156752310157565),
+				0.206984809559303);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(5.839746189755365),
+				3.6765475776912986);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-49.84878486860723),
+				2.5066914438499);
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6.004674385512021),
+				2.825519975231435);
+	
+		m_kinematicsSimpler.createTrajectory(myPath, 0.3929169767434745, 1.9171932478971456);
+
 		printTrajectory(myPath);
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -1017,7 +1044,7 @@ public class KinematicsTester {
 	private static void createRandomTestCases()
 			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
 			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic {
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			Random random = new Random();
 			Path myPath = m_kinematicsSimpler.new Path();
 			KinematicsTester kinematicsTester1 = new KinematicsTester();
@@ -1029,6 +1056,10 @@ public class KinematicsTester {
 			if (maxVelocity < 0.1) {
 				maxVelocity += 1;
 			}
+			if (maxAcceleration < 0.01) {
+				maxAcceleration = 0.02;
+			}
+			 Point previousPoint = m_kinematicsSimpler.new Point(0);
 			for (int i1 = 0; i1 < numberOfSetpoints; i1++) {
 				double setpointInt = random.nextInt(50);
 				double setpointDouble = random.nextDouble();
@@ -1036,9 +1067,7 @@ public class KinematicsTester {
 				double customMaxVelocity;
 				double directionConstant;
 				if (random.nextBoolean()) {
-					System.out.println("");
-					System.out.println("maxVelocityInt: " + maxVelocityInt);
-					System.out.println("");
+					
 					try {
 						customMaxVelocity = random.nextDouble() + random.nextInt(maxVelocityInt);
 					} catch (IllegalArgumentException a) {
@@ -1055,16 +1084,25 @@ public class KinematicsTester {
 				} else {
 					directionConstant = -1.0;
 				}
+				if(Math.abs(setpoint - previousPoint.getm_X()) < maxAcceleration*m_kinematicsSimpler.getTrajectoryPointInterval()) {
+					if(setpoint > 0.0) {
+						setpoint += maxAcceleration*KinematicsSimpler.getTrajectoryPointInterval();
+					}else {
+						setpoint -= maxAcceleration*KinematicsSimpler.getTrajectoryPointInterval();
+					}
+				}
 				m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(setpoint * directionConstant),
 						customMaxVelocity);
+				
+				
+				previousPoint = m_kinematicsSimpler.new Point(setpoint*directionConstant);
+				
 			}
-			if (maxAcceleration < 0.01) {
-				maxAcceleration = 0.02;
-			}
+			
 			m_kinematicsSimpler.createTrajectory(myPath, maxVelocity, maxAcceleration);
 
 			printTrajectory(myPath);
-			System.out.println("Number: " + i);
+			System.out.println("Number: " + (i + 1));
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		}
 	}
@@ -1244,8 +1282,7 @@ public class KinematicsTester {
 						&& nextTrajectoryPoint.m_currentVelocity > 0.0)
 						|| (trajectoryPoint.m_currentVelocity < 0.0 && previousTrajectoryPoint.m_currentVelocity < 0.0
 								&& nextTrajectoryPoint.m_currentVelocity < 0.0)) {
-					System.out.println("");
-					System.out.println("setpoint.getm_X(): " + setpoint.getm_X());
+					
 					errMessage = "The point at time: " + trajectoryPoint.m_timestamp
 							+ " is a point in which the direction is changing however the velocity is not 0!";
 					invalidTrajectoryLogic = kinematicsTester.new InvalidTrajectoryLogic(errMessage);
@@ -1302,7 +1339,7 @@ public class KinematicsTester {
 	private static void printTrajectory(Path Key) {
 		System.out.println("Trajectory Point: [vel, acc, pos, time]");
 		for (int i = 0; i < Key.getTrajectoryVector().size(); i++) {
-			if(Key.getTrajectoryVector().get(i).m_timestamp < 200) {
+			if(Key.getTrajectoryVector().get(i).m_timestamp < 150 || Key.getTrajectoryVector().get(i).m_timestamp > 275) {
 				continue;
 			}
 			System.out.println("Trajectory Point: [" + Key.getTrajectoryVector().get(i).m_currentVelocity + ", "
