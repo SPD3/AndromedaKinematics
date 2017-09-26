@@ -149,7 +149,6 @@ public class KinematicsTester {
 		
 		printTrajectory(myPath);
 		checkTrajectoryPath(myPath, kinematicsTester);
-
 	}
 
 	private static void createPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase()
