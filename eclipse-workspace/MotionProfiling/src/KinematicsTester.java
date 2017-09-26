@@ -15,7 +15,7 @@ public class KinematicsTester {
 		try {
 			createPositiveTrajectoryGreaterThanTheDistanceCoveredWhileAcceleratingCase();
 
-			createPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+			/*createPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
 
 			createNegativeTrajectoryGreaterThanDistanceCoveredWhileAcceleratingCase();
 
@@ -129,7 +129,7 @@ public class KinematicsTester {
 			
 			TestCases10();
 			
-			createRandomTestCases();
+			createRandomTestCases();*/
 		} catch (InvalidDimentionException | InvalidVelocityException | InvalidNextVelocityFromLastAcceleration
 				| InvalidAccelerationException | InvalidFinalPosition | InvalidTrajectoryLogic e) {
 			// TODO Auto-generated catch block
@@ -146,7 +146,8 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
-
+		
+		printTrajectory(myPath);
 		checkTrajectoryPath(myPath, kinematicsTester);
 
 	}
@@ -1335,7 +1336,7 @@ public class KinematicsTester {
 		private static final long serialVersionUID = 1L;
 
 	}
-
+	
 	private static void printTrajectory(Path Key) {
 		System.out.println("Trajectory Point: [vel, acc, pos, time]");
 		for (int i = 0; i < Key.getTrajectoryVector().size(); i++) {
