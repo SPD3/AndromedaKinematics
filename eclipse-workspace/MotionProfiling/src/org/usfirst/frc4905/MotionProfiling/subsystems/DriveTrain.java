@@ -65,9 +65,9 @@ public class DriveTrain extends Subsystem {
 	
 	public void setAllDriveControllers(double value) {
 		backLeft.set(value);
-		backRight.set(value);
+		backRight.set(-value);
 		frontLeft.set(value);
-		frontRight.set(value);
+		frontRight.set(-value);
 	}
 
 	public double getAllEncoderPosition() {

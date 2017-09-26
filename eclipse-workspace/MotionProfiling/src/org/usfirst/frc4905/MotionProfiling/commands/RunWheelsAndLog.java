@@ -49,8 +49,8 @@ public class RunWheelsAndLog extends Command {
 		Vector<String> header = new Vector<String>();
 		header.add(new String("Velocities"));
 		header.add(new String("Acceleration"));
-		header.addElement(new String("Time Between Runs"));
-		Trace.getInstance().addTrace("Motion Profiling Data", header);
+		header.addElement(new String("TimeBetweenRuns"));
+		Trace.getInstance().addTrace("MotionProfilingData", header);
 		m_header = header;
 		m_initialTimeStamp = Timer.getFPGATimestamp();
 	}
@@ -85,10 +85,12 @@ public class RunWheelsAndLog extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
+		Robot.driveTrain.setAllDriveControllers(0.0);
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		end();
 	}
 }
