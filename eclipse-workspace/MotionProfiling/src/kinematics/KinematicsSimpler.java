@@ -36,12 +36,14 @@ public class KinematicsSimpler {
 		}
 
 		int setPointDimention = 0;
+
+		
 	}
 
 	private class TrajectoryPaths {
 		double maxVelocity;
 		double maxAcceleration;
-
+		double maxJerk;
 		public double getMaxVelocity() {
 			return maxVelocity;
 		};
@@ -54,6 +56,9 @@ public class KinematicsSimpler {
 
 		public Vector<TrajectoryPoint> getTrajectoryVector() {
 			return trajectoryVector;
+		}
+		public double getMaxJerk() {
+			return maxJerk;
 		}
 	}
 
@@ -69,12 +74,8 @@ public class KinematicsSimpler {
 
 		}
 
-		public double m_currentVelocity, m_acceleration, m_timestamp, m_position = 0.0;
-		/*
-		 * public double getm_CurrentVelocity() { return m_currentVelocity; } public
-		 * double getm_Acceleration() { return m_acceleration; } public double
-		 * getm_Timestamp() { return m_timestamp; }
-		 */
+		public double m_currentVelocity, m_acceleration, m_timestamp, m_position, m_jerk = 0.0;
+		
 	}
 
 	public class Point {
@@ -110,8 +111,14 @@ public class KinematicsSimpler {
 			return maxVelocity;
 		}
 
-		double startCruisingDeltaTime;
-		double endCruisingDeltaTime;
+		double startVeloctityCruisingDeltaTime;
+		double endVelocityCruisingDeltaTime;
+		
+		double firstStartAccelerationCruisingDeltaTime;
+		double firstEndAccelerationCruisingDeltaTime;
+		double secondStartAccelerationCruisingDeltaTime;
+		double secondEndAccelerationCruisingDeltaTime;
+		
 		double endDeltaTime;
 		double maxVelocity;
 
@@ -190,9 +197,10 @@ public class KinematicsSimpler {
 	 * This method takes the setpoint vector and turns it into a trajectory vector
 	 * by time parameterizing each setpoint
 	 */
-	public void createTrajectory(Path Key, double maxVelocity, double maxAcceleration) {
+	public void createTrajectory(Path Key, double maxVelocity, double maxAcceleration, double maxJerk) {
 		Key.maxAcceleration = maxAcceleration;
 		Key.maxVelocity = maxVelocity;
+		Key.maxJerk = maxJerk;
 
 		/*
 		 * If the dimension of the vector is 2 numerically integrate the path to create
@@ -259,7 +267,7 @@ public class KinematicsSimpler {
 				double distanceAccelerating = getDistanceTraveledWhileAccelerating(setpoint.vi, setpoint.maxVelocity,
 						Key.maxAcceleration);
 
-				setpoint.startCruisingDeltaTime = (setpoint.maxVelocity - setpoint.vi) / Key.maxAcceleration;
+				setpoint.startVeloctityCruisingDeltaTime = (setpoint.maxVelocity - setpoint.vi) / Key.maxAcceleration;
 
 				double endCruisingDeltaTimeFromEnd = Math
 						.abs((setpoint.vf - setpoint.maxVelocity) / Key.maxAcceleration);
@@ -271,17 +279,17 @@ public class KinematicsSimpler {
 
 				double distanceCruising = Math.abs(setpoint.m_x - lastSetpoint.m_x)
 						- Math.abs(distanceAccelerating + distanceDecelerating);
-				setpoint.endCruisingDeltaTime = Math
-						.abs((distanceCruising / setpoint.maxVelocity) + setpoint.startCruisingDeltaTime);
-				setpoint.endDeltaTime = setpoint.endCruisingDeltaTime + endCruisingDeltaTimeFromEnd;
+				setpoint.endVelocityCruisingDeltaTime = Math
+						.abs((distanceCruising / setpoint.maxVelocity) + setpoint.startVeloctityCruisingDeltaTime);
+				setpoint.endDeltaTime = setpoint.endVelocityCruisingDeltaTime + endCruisingDeltaTimeFromEnd;
 
 			} else {
-				setpoint.startCruisingDeltaTime = Math.abs(halfWayTime);
-				setpoint.endCruisingDeltaTime = Math.abs(halfWayTime);
+				setpoint.startVeloctityCruisingDeltaTime = Math.abs(halfWayTime);
+				setpoint.endVelocityCruisingDeltaTime = Math.abs(halfWayTime);
 				setpoint.maxVelocity = theoreticalMaxVelocity;
 				double endCruisingDeltaTimeFromEnd = Math
 						.abs((setpoint.vf - theoreticalMaxVelocity) / Key.maxAcceleration);
-				setpoint.endDeltaTime = setpoint.startCruisingDeltaTime + endCruisingDeltaTimeFromEnd;
+				setpoint.endDeltaTime = setpoint.startVeloctityCruisingDeltaTime + endCruisingDeltaTimeFromEnd;
 			}
 
 			// Needs to do this so that the last time through the code the max velocity is
@@ -649,8 +657,8 @@ public class KinematicsSimpler {
 				// Else if currentTime is before the startDeltaTime
 
 				// Else the currentTime is after endCruisingDeltaTime
-				if (setpoint.startCruisingDeltaTime + previousTime <= currentTime
-						&& i11 < setpoint.endCruisingDeltaTime + previousTime) {
+				if (setpoint.startVeloctityCruisingDeltaTime + previousTime <= currentTime
+						&& i11 < setpoint.endVelocityCruisingDeltaTime + previousTime) {
 					trajectoryPoint.m_currentVelocity = setpoint.maxVelocity;
 					trajectoryPoint.m_currentVelocity *= directionConstant;
 
@@ -661,7 +669,7 @@ public class KinematicsSimpler {
 
 					// Gets the distance covered from the startCruisingDeltaTime to currentTime
 					double distanceTraveledWhileCruising = setpoint.maxVelocity
-							* (currentTime - (setpoint.startCruisingDeltaTime + previousTime));
+							* (currentTime - (setpoint.startVeloctityCruisingDeltaTime + previousTime));
 
 					// Calculate the delta position from the starting position of the setpoint by
 					// adding the
@@ -669,7 +677,7 @@ public class KinematicsSimpler {
 					trajectoryPoint.m_position = distanceTraveledWhileAccelerating + distanceTraveledWhileCruising;
 					trajectoryPoint.m_position *= directionConstant;
 
-				} else if (currentTime < setpoint.startCruisingDeltaTime + previousTime) {
+				} else if (currentTime < setpoint.startVeloctityCruisingDeltaTime + previousTime) {
 					// This is the kinematic equation which uses initial velocity, acceleration and
 					// time to calculate final velocity. In this instance the current velocity is
 					// the final velocity that is being solved for and the time is the delta time
@@ -717,8 +725,8 @@ public class KinematicsSimpler {
 					}
 					// Finds the distance traveled while cruising
 					double distanceTraveledWhileCruising = setpoint.maxVelocity
-							* ((setpoint.endCruisingDeltaTime + previousTime)
-									- (setpoint.startCruisingDeltaTime + previousTime));
+							* ((setpoint.endVelocityCruisingDeltaTime + previousTime)
+									- (setpoint.startVeloctityCruisingDeltaTime + previousTime));
 
 					// Finds the distance covered while decelerating from the cruising
 					// velocity(maxVelocity) to the current velocity
@@ -789,13 +797,13 @@ public class KinematicsSimpler {
 					// velocity just applied to this nextTime and lastsetpoint
 					if (lastSetpoint.endDeltaTime == 0.0) {
 						nextVelocity = 0.0;
-					} else if (lastSetpoint.startCruisingDeltaTime + previousTime + nextSetpointsEndTimes
+					} else if (lastSetpoint.startVeloctityCruisingDeltaTime + previousTime + nextSetpointsEndTimes
 							 <= nextTime
-							&& nextTime < lastSetpoint.endCruisingDeltaTime + previousTime + nextSetpointsEndTimes
+							&& nextTime < lastSetpoint.endVelocityCruisingDeltaTime + previousTime + nextSetpointsEndTimes
 									) {
 
 						nextVelocity = lastSetpoint.maxVelocity;
-					} else if (nextTime < lastSetpoint.startCruisingDeltaTime + previousTime + nextSetpointsEndTimes) {
+					} else if (nextTime < lastSetpoint.startVeloctityCruisingDeltaTime + previousTime + nextSetpointsEndTimes) {
 
 						nextVelocity = lastSetpoint.vi
 								+ Key.maxAcceleration * (nextTime - (nextSetpointsEndTimes + previousTime));
@@ -811,10 +819,10 @@ public class KinematicsSimpler {
 							directionConstant = 1;
 						}
 					}
-				} else if (setpoint.startCruisingDeltaTime + previousTime <= nextTime
-						&& nextTime < setpoint.endCruisingDeltaTime + previousTime) {
+				} else if (setpoint.startVeloctityCruisingDeltaTime + previousTime <= nextTime
+						&& nextTime < setpoint.endVelocityCruisingDeltaTime + previousTime) {
 					nextVelocity = setpoint.maxVelocity;
-				} else if (nextTime < setpoint.startCruisingDeltaTime + previousTime) {
+				} else if (nextTime < setpoint.startVeloctityCruisingDeltaTime + previousTime) {
 					nextVelocity = setpoint.vi + Key.maxAcceleration * (nextTime - previousTime);
 				} else {
 					nextVelocity = setpoint.vf
@@ -831,20 +839,20 @@ public class KinematicsSimpler {
 						System.out.println(
 								"(lastSetpoint.startCruisingDeltaTime + previousTime + nextSetpointsEndTimes <= nextTime\n"
 										+ "							&& nextTime < lastSetpoint.endCruisingDeltaTime + previousTime + nextSetpointsEndTimes)"
-										+ (lastSetpoint.startCruisingDeltaTime + previousTime
+										+ (lastSetpoint.startVeloctityCruisingDeltaTime + previousTime
 												+ nextSetpointsEndTimes <= nextTime
-												&& nextTime < lastSetpoint.endCruisingDeltaTime + previousTime
+												&& nextTime < lastSetpoint.endVelocityCruisingDeltaTime + previousTime
 														+ nextSetpointsEndTimes));
 						System.out.println(
 								"nextTime < lastSetpoint.startCruisingDeltaTime + previousTime + nextSetpointsEndTimes "
-										+ (nextTime < lastSetpoint.startCruisingDeltaTime + previousTime
+										+ (nextTime < lastSetpoint.startVeloctityCruisingDeltaTime + previousTime
 												+ nextSetpointsEndTimes));
 						System.out.println("currentTime: " + currentTime);
 						System.out.println("trajectoryPoint.m_timestamp: " + trajectoryPoint.m_timestamp);
 						System.out.println(
-								"setpoint.startCruisingDeltaTime: " + (setpoint.startCruisingDeltaTime + previousTime));
+								"setpoint.startCruisingDeltaTime: " + (setpoint.startVeloctityCruisingDeltaTime + previousTime));
 						System.out.println(
-								"setpoint.endCruisingDeltaTime: " + (setpoint.endCruisingDeltaTime + previousTime));
+								"setpoint.endCruisingDeltaTime: " + (setpoint.endVelocityCruisingDeltaTime + previousTime));
 						System.out.println("setpoint.endDeltaTime: " + (setpoint.endDeltaTime + previousTime));
 						System.out.println("i11: " + i11);
 						System.out.println("setpoint.vi: " + setpoint.vi);
@@ -864,8 +872,8 @@ public class KinematicsSimpler {
 						System.out.println("trajectoryPoint.m_currentVelocity: " + trajectoryPoint.m_currentVelocity);
 						System.out.println("trajectoryPoint.m_acceleration: " + trajectoryPoint.m_acceleration);
 						System.out.println("lastSetpoint.startCruisingDeltaTime: "
-								+ (lastSetpoint.startCruisingDeltaTime + previousTime + nextSetpointsEndTimes));
-						System.out.println("lastSetpoint.endCruisingDeltaTime: " + lastSetpoint.endCruisingDeltaTime);
+								+ (lastSetpoint.startVeloctityCruisingDeltaTime + previousTime + nextSetpointsEndTimes));
+						System.out.println("lastSetpoint.endCruisingDeltaTime: " + lastSetpoint.endVelocityCruisingDeltaTime);
 						System.out.println("lastSetpoint.endDeltaTime: " + lastSetpoint.endDeltaTime);
 						System.out.println("(nextTime - setpoint.endDeltaTime): " + (nextTime - previousTime));
 						System.out.println("lastSetpoint.maxVelocity: " + lastSetpoint.maxVelocity);
