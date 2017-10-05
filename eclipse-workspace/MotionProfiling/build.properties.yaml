@@ -12,7 +12,7 @@ Children:
           default: '2'
           name: CAN ID
           validators: &id002 [CANID]
-          value: '0'
+          value: '1'
       Base: CAN Talon
       Name: FrontLeft
     - Children: []
@@ -22,7 +22,7 @@ Children:
           default: '2'
           name: CAN ID
           validators: *id002
-          value: '1'
+          value: '2'
       Base: CAN Talon
       Name: FrontRight
     - Children: []
@@ -32,7 +32,7 @@ Children:
           default: '2'
           name: CAN ID
           validators: *id002
-          value: '2'
+          value: '3'
       Base: CAN Talon
       Name: BackLeft
     - Children: []
@@ -42,7 +42,7 @@ Children:
           default: '2'
           name: CAN ID
           validators: *id002
-          value: '3'
+          value: '4'
       Base: CAN Talon
       Name: BackRight
     Properties:

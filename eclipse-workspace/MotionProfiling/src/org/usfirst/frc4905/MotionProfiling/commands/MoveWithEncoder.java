@@ -15,7 +15,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import kinematics.KinematicsSimpler;
 import kinematics.KinematicsSimpler.*;
 
+import java.util.Vector;
+
 import org.usfirst.frc4905.MotionProfiling.Robot;
+
+import Utilities.Trace;
 
 /**
  *
@@ -34,9 +38,12 @@ public class MoveWithEncoder extends Command {
 	double m_accelerationToMotorOutputRatio;
 	double m_PIDOut;
 	double m_positionToEncoderRevolutionsRatio = 5.0;
-
-	KinematicsSimpler.TrajectoryPoint trajectoryPoint = Robot.kinematicsSimpler.new TrajectoryPoint();
-
+	double m_initialEncoderPosition;
+	KinematicsSimpler m_kinematicsSimpler = new KinematicsSimpler();
+	
+	KinematicsSimpler.TrajectoryPoint currentTrajectoryPoint = Robot.kinematicsSimpler.new TrajectoryPoint();
+	
+	Vector<String> m_header = new Vector<String>();
 	public MoveWithEncoder() {
 
 	}
@@ -55,37 +62,57 @@ public class MoveWithEncoder extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		Robot.driveTrain.setControlModeSpeed();
+		
 		m_velocityToMotorOutputRatio = 1.0 / m_path.getMaxVelocity();
 		m_accelerationToMotorOutputRatio = 1.0 / m_path.getMaxAcceleration();
 		m_initialTimeStamp = Timer.getFPGATimestamp();
-		Robot.driveTrain.initializeEncoderPID();
+		Robot.driveTrain.initializeDeltaPositionPID();
+		Vector<String> header = new Vector<String>();
+		header.add(new String("ActualVelocity"));
+		header.add(new String("ProjectedVelocity"));
+		header.add(new String("ActualPosition"));
+		header.add(new String("ProjectedPosition"));
+		Trace.getInstance().addTrace("MoveWithEncoderData", header);
+		m_header = header;
+		m_initialTimeStamp = Timer.getFPGATimestamp();
+		m_initialEncoderPosition =Robot.driveTrain.getEncoderPosition();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		Vector<Double> entry = new Vector<Double>();
 		m_currentTimeStamp = Timer.getFPGATimestamp();
 		deltaTime = m_currentTimeStamp - m_initialTimeStamp;
-		trajectoryPoint = Robot.kinematicsSimpler.getTrajectoryPoint(m_path.getTrajectoryVector(), deltaTime);
-		Robot.driveTrain.moveToEncoderRevolutions(trajectoryPoint.m_position * m_positionToEncoderRevolutionsRatio);
-		m_PIDOut = Robot.driveTrain.getEncoderPIDOutput();
-
-		Robot.driveTrain.setAllDriveControllers(trajectoryPoint.m_currentVelocity * m_velocityToMotorOutputRatio
-				+ trajectoryPoint.m_acceleration * m_accelerationToMotorOutputRatio + m_PIDOut);
+		currentTrajectoryPoint = Robot.kinematicsSimpler.getTrajectoryPoint(m_path.getTrajectoryVector(), (deltaTime/60));
+		// Change this to use position that way ensuring the robot hits the final position
+		Robot.driveTrain.setPositionSetpoint(currentTrajectoryPoint.m_position);
+		m_PIDOut = Robot.driveTrain.getDeltaPositionPIDOutput();
+		System.out.println("currentTrajectoryPoint.m_currentVelocity: " + currentTrajectoryPoint.m_currentVelocity);
+		Robot.driveTrain.setAllDriveControllers((currentTrajectoryPoint.m_currentVelocity)
+				+ m_PIDOut); 
+		entry.add(Robot.driveTrain.getVelocity());
+		entry.add(currentTrajectoryPoint.m_currentVelocity);
+		entry.add(Robot.driveTrain.getEncoderPosition() - m_initialEncoderPosition);
+		entry.add(currentTrajectoryPoint.m_position);
+		Trace.getInstance().addEntry("MoveWithEncoderData", entry);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return trajectoryPoint.m_timestamp == m_path.getTrajectoryVector()
-				.get(m_path.getTrajectoryVector().size() - 1).m_timestamp
-				&& Robot.driveTrain.isDoneMovingToEncoderRevolutions();
+		return currentTrajectoryPoint.m_timestamp == m_path.getTrajectoryVector()
+				.get(m_path.getTrajectoryVector().size() - 1).m_timestamp;
 	}
 
 	// Called once after isFinished returns true
 	protected void end() {
+		Robot.driveTrain.setAllDriveControllers(0.0);
+		Trace.getInstance().flushTraceFiles();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
+		end();
 	}
 }

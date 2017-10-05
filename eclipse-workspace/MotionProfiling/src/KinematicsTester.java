@@ -13,6 +13,7 @@ public class KinematicsTester {
 	public static void main(String[] args) {
 
 		try {
+			
 			createPositiveTrajectoryGreaterThanTheDistanceCoveredWhileAcceleratingCase();
 
 			createPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
@@ -129,7 +130,8 @@ public class KinematicsTester {
 			
 			TestCases10();
 			
-			createRandomTestCases();
+			TestCases11();
+			//createRandomTestCases();
 		} catch (InvalidDimentionException | InvalidVelocityException | InvalidNextVelocityFromLastAcceleration
 				| InvalidAccelerationException | InvalidFinalPosition | InvalidTrajectoryLogic e) {
 			// TODO Auto-generated catch block
@@ -1036,6 +1038,20 @@ public class KinematicsTester {
 	
 		m_kinematicsSimpler.createTrajectory(myPath, 0.3929169767434745, 1.9171932478971456);
 
+		
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void TestCases11()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1000));
+		
+		m_kinematicsSimpler.createTrajectory(myPath, (890), (221000));
 		printTrajectory(myPath);
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -1106,6 +1122,8 @@ public class KinematicsTester {
 			checkTrajectoryPath(myPath, kinematicsTester1);
 		}
 	}
+	
+	
 
 	private static void checkTrajectoryPath(Path Key, KinematicsTester kinematicsTester)
 			throws InvalidVelocityException, InvalidNextVelocityFromLastAcceleration, InvalidAccelerationException,
@@ -1339,9 +1357,7 @@ public class KinematicsTester {
 	private static void printTrajectory(Path Key) {
 		System.out.println("Trajectory Point: [vel, acc, pos, time]");
 		for (int i = 0; i < Key.getTrajectoryVector().size(); i++) {
-			if(Key.getTrajectoryVector().get(i).m_timestamp < 150 || Key.getTrajectoryVector().get(i).m_timestamp > 275) {
-				continue;
-			}
+			
 			System.out.println("Trajectory Point: [" + Key.getTrajectoryVector().get(i).m_currentVelocity + ", "
 					+ Key.getTrajectoryVector().get(i).m_acceleration + ", "
 					+ Key.getTrajectoryVector().get(i).m_position + ", " + Key.getTrajectoryVector().get(i).m_timestamp

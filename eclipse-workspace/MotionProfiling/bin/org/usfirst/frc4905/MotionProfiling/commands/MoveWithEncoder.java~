@@ -56,7 +56,7 @@ public class MoveWithEncoder extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		m_velocityToMotorOutputRatio = 1.0 / m_path.getMaxVelocity();
-		m_accelerationToMotorOutputRatio = 1.0 / m_path.getmaxAcceleration();
+		m_accelerationToMotorOutputRatio = 1.0 / m_path.getMaxAcceleration();
 		m_initialTimeStamp = Timer.getFPGATimestamp();
 		Robot.driveTrain.initializeEncoderPID();
 	}

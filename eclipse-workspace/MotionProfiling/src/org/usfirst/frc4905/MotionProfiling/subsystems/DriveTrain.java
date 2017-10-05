@@ -14,6 +14,8 @@ import org.usfirst.frc4905.MotionProfiling.RobotMap;
 import org.usfirst.frc4905.MotionProfiling.commands.*;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -52,6 +54,13 @@ public class DriveTrain extends Subsystem {
 	double m_encoderPIDOutput = 0.0;
 	ResetEncoderPositions m_resetEncoderPositions = new ResetEncoderPositions();
 	
+	public DriveTrain(){
+		setCommonMotorParameters(backLeft);
+		setCommonMotorParameters(backRight);
+		setCommonMotorParameters(frontLeft);
+		setCommonMotorParameters(frontRight);
+	}
+	
 	private class ResetEncoderPositions{
 		double backLeft;
 		double backRight;
@@ -64,14 +73,21 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void setAllDriveControllers(double value) {
+		
 		backLeft.set(value);
 		backRight.set(value);
 		frontLeft.set(value);
 		frontRight.set(value);
+		
 	}
-
-	public double getAllEncoderPosition() {
-		return backLeft.get() + backRight.get() + frontLeft.get() + frontRight.get();
+	
+	public double getVelocity() {
+		return backLeft.getSpeed();
+		
+	}
+	
+	public double getEncoderPosition() {
+		return backLeft.getPosition();
 	}
 	
 	private void resetEncoderPosition(){
@@ -80,6 +96,73 @@ public class DriveTrain extends Subsystem {
 		m_resetEncoderPositions.frontRight = frontRight.get();
 		m_resetEncoderPositions.frontLeft = frontLeft.get();
 	}
+	
+	private PIDController m_velocityPID;
+	
+	public PIDController getDeltaPositionPIDController() {
+		return m_velocityPID;
+	}
+	
+	private class DeltaPositionPIDin implements PIDSource {
+
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+
+		}
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return PIDSourceType.kDisplacement;
+		}
+
+		@Override
+		public double pidGet() {
+			return getEncoderPosition();
+		}
+
+	}
+	private double m_velocityPIDOutput;
+	public double getDeltaPositionPIDOutput() {return m_velocityPIDOutput;}
+
+	private class DeltaPositionPIDout implements PIDOutput {
+
+		@Override
+		public void pidWrite(double output) {
+			m_velocityPIDOutput = output;
+		}
+
+	}
+	private double m_velocityKp = 0.0;
+	private double m_velocityKi = 0.0;
+	private double m_velocityKd = 0.0;
+	private double m_velocityKf = 0.0;
+	private double m_velocityTolerance = 0.1; 
+	
+	public void initializeDeltaPositionPID() {
+		DeltaPositionPIDin velocityPIDin = new DeltaPositionPIDin();
+		DeltaPositionPIDout velocityPIDout = new DeltaPositionPIDout();
+		
+		m_velocityPID = new PIDController(m_velocityKp, m_velocityKi, m_velocityKd, m_velocityKf, velocityPIDin,
+				velocityPIDout);
+		
+		m_velocityPID.setAbsoluteTolerance(m_velocityTolerance);
+		LiveWindow.addActuator("DriveTrain", "DeltaPositionPID", m_velocityPID);
+	}
+
+	public void setPositionSetpoint(double velocitySetpoint) {
+		m_velocityPID.setSetpoint(velocitySetpoint);
+		m_velocityPID.enable();
+	}
+
+	public boolean isDoneDeltaPositionPID() {
+		return m_velocityPID.onTarget();
+	}
+
+	public void stopDeltaPositionPID() {
+		m_velocityPID.disable();
+
+	}
+	
 	// Encoder PID controller
 	private PIDController m_moveWithEncoderPID;
 
@@ -101,7 +184,7 @@ public class DriveTrain extends Subsystem {
 
 		@Override
 		public double pidGet() {
-			return getAllEncoderPosition();
+			return getVelocity();
 		}
 
 	}
@@ -138,6 +221,44 @@ public class DriveTrain extends Subsystem {
 	public void stopMovingToEncoderRevolutions() {
 		m_moveWithEncoderPID.disable();
 
+	}
+	
+	private void setCommonMotorParameters(CANTalon motorController) {
+		motorController.reverseSensor(false);
+		motorController.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		motorController.setPosition(0);
+		motorController.configNominalOutputVoltage(0, 0);
+		motorController.configPeakOutputVoltage(12.0, -12.0);
+		motorController.enableBrakeMode(true);
+		motorController.setVoltageRampRate(48);
+		motorController.changeControlMode(TalonControlMode.PercentVbus);
+		motorController.setProfile(0);
+		motorController.set(0);
+	}
+	
+	public void setControlModeSpeed() {
+		setNormalPIDParameters();
+		backLeft.changeControlMode(TalonControlMode.Speed);
+		backRight.changeControlMode(TalonControlMode.Speed);
+		frontRight.changeControlMode(TalonControlMode.Speed);
+		frontLeft.changeControlMode(TalonControlMode.Speed);
+	}
+	public void setControlModePercentVbus() {
+		setNormalPIDParameters();
+		backLeft.changeControlMode(TalonControlMode.PercentVbus);
+		backRight.changeControlMode(TalonControlMode.PercentVbus);
+		frontRight.changeControlMode(TalonControlMode.PercentVbus);
+		frontLeft.changeControlMode(TalonControlMode.PercentVbus);
+	}
+	
+	private void setNormalPIDParameters() {
+		//                 P    I  D  F                       Izone RampRate Profile
+		backLeft.setPID(   0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		backRight.setPID(  0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		frontLeft.setPID(  0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		frontRight.setPID( 0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		// Page 88 in CTR Documentation for f 
+		
 	}
 
 	public void initDefaultCommand() {
