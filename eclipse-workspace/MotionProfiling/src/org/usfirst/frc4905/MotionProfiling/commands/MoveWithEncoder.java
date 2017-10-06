@@ -85,7 +85,6 @@ public class MoveWithEncoder extends Command {
 		m_currentTimeStamp = Timer.getFPGATimestamp();
 		deltaTime = m_currentTimeStamp - m_initialTimeStamp;
 		currentTrajectoryPoint = Robot.kinematicsSimpler.getTrajectoryPoint(m_path.getTrajectoryVector(), (deltaTime/60));
-		// Change this to use position that way ensuring the robot hits the final position
 		Robot.driveTrain.setPositionSetpoint(currentTrajectoryPoint.m_position);
 		m_PIDOut = Robot.driveTrain.getDeltaPositionPIDOutput();
 		System.out.println("currentTrajectoryPoint.m_currentVelocity: " + currentTrajectoryPoint.m_currentVelocity);
