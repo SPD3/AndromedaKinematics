@@ -264,8 +264,12 @@ public class KinematicsSimpler {
 			 */
 
 			if (theoreticalMaxVelocity > setpoint.maxVelocity) {
-				double distanceAccelerating = getDistanceTraveledWhileAccelerating(setpoint.vi, setpoint.maxVelocity,
-						Key.maxAcceleration);
+				double viJerkDistance = getDistanceTraveledWhileAccelerating(setpoint.vi, maxJerk, Key.maxJerk);
+				
+				double distanceAtMaxAcceleration = setpoint.maxVelocity - (2*viJerkDistance);
+				
+				setpoint.firstStartAccelerationCruisingDeltaTime = (Key.maxAcceleration - setpoint.vi)/Key.maxJerk;
+				
 
 				setpoint.startVeloctityCruisingDeltaTime = (setpoint.maxVelocity - setpoint.vi) / Key.maxAcceleration;
 

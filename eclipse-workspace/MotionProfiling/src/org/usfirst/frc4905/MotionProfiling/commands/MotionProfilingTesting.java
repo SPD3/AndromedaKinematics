@@ -53,7 +53,7 @@ public class MotionProfilingTesting extends CommandGroup {
 			e.printStackTrace();
 		}
 
-		Robot.kinematicsSimpler.createTrajectory(myFirstPath, 2.0, 0.5);
+		Robot.kinematicsSimpler.createTrajectory(myFirstPath, 2.0, 0.5, 0.25);
 
 		addSequential(new MoveWithEncoder(myFirstPath));
 	}
