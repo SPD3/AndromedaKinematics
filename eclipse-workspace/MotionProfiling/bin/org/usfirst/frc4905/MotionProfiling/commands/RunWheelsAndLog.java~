@@ -60,9 +60,14 @@ public class RunWheelsAndLog extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+<<<<<<< HEAD
 		Robot.driveTrain.setControlModePercentVbus();
 		Robot.driveTrain.setAllDriveControllers(0.2);
 		
+=======
+		Robot.driveTrain.setAllDriveControllers(0.1);
+
+>>>>>>> JerkTesting
 		Vector<Double> entry = new Vector<Double>();
 		double currentTimeStamp = Timer.getFPGATimestamp();
 		double deltaTimeFromLastExecute = currentTimeStamp - m_previousTimeStamp;
@@ -95,8 +100,11 @@ public class RunWheelsAndLog extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		Robot.driveTrain.setAllDriveControllers(0.0);
+<<<<<<< HEAD
 		Trace.getInstance().flushTraceFiles();
 		
+=======
+>>>>>>> JerkTesting
 	}
 
 	// Called when another command which requires one or more of the same

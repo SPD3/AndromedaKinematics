@@ -79,7 +79,7 @@ public class DriveTrain extends Subsystem {
 		backRight.set(-value);
 		frontLeft.set(value);
 		frontRight.set(-value);
-		
+
 	}
 	
 	public double getVelocity() {

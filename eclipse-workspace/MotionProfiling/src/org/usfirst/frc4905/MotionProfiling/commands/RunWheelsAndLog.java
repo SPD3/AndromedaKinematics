@@ -95,8 +95,9 @@ public class RunWheelsAndLog extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		Robot.driveTrain.setAllDriveControllers(0.0);
+
 		Trace.getInstance().flushTraceFiles();
-		
+
 	}
 
 	// Called when another command which requires one or more of the same

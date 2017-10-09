@@ -70,6 +70,7 @@ public class MoveWithEncoder extends Command {
 
 		m_velocityToMotorOutputRatio = 1.0 / m_path.getMaxVelocity();
 		m_accelerationToMotorOutputRatio = 1.0 / m_path.getMaxAcceleration();
+<<<<<<< HEAD
 		m_initialTimeStamp = Timer.getFPGATimestamp();
 		Robot.driveTrain.initializePositionPID();
 		Vector<String> header = new Vector<String>();
@@ -82,6 +83,8 @@ public class MoveWithEncoder extends Command {
 		header.add(new String("Zero"));
 		Trace.getInstance().addTrace("MoveWithEncoderData", header);
 		m_header = header;
+=======
+>>>>>>> JerkTesting
 		m_initialTimeStamp = Timer.getFPGATimestamp();
 		m_initialEncoderPosition = Robot.driveTrain.getEncoderPosition();
 	}

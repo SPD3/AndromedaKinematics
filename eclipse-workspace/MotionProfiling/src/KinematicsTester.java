@@ -16,7 +16,7 @@ public class KinematicsTester {
 			
 			createPositiveTrajectoryGreaterThanTheDistanceCoveredWhileAcceleratingCase();
 
-			createPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+			/*createPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
 
 			createNegativeTrajectoryGreaterThanDistanceCoveredWhileAcceleratingCase();
 
@@ -131,7 +131,9 @@ public class KinematicsTester {
 			TestCases10();
 			
 			TestCases11();
-			//createRandomTestCases();
+			
+			createRandomTestCases();*/
+
 		} catch (InvalidDimentionException | InvalidVelocityException | InvalidNextVelocityFromLastAcceleration
 				| InvalidAccelerationException | InvalidFinalPosition | InvalidTrajectoryLogic e) {
 			// TODO Auto-generated catch block
@@ -147,10 +149,10 @@ public class KinematicsTester {
 		KinematicsTester kinematicsTester = new KinematicsTester();
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
-
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		
+		printTrajectory(myPath);
 		checkTrajectoryPath(myPath, kinematicsTester);
-
 	}
 
 	private static void createPositiveTrajectoryLessThanTwiceTheDistanceCoveredWhileAcceleratingCase()
@@ -160,7 +162,7 @@ public class KinematicsTester {
 		KinematicsTester kinematicsTester1 = new KinematicsTester();
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 	}
@@ -172,7 +174,7 @@ public class KinematicsTester {
 		KinematicsTester kinematicsTester = new KinematicsTester();
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester);
 
@@ -185,7 +187,7 @@ public class KinematicsTester {
 		KinematicsTester kinematicsTester1 = new KinematicsTester();
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-6));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -199,7 +201,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		
 		checkTrajectoryPath(myPath, kinematicsTester);
@@ -214,7 +216,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(8));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -228,7 +230,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester);
 
@@ -242,7 +244,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-8));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -256,7 +258,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-6));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -270,7 +272,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -284,7 +286,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -298,7 +300,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-16));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -312,7 +314,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-12));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -326,7 +328,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-6));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -340,7 +342,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -354,7 +356,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-5));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-7));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -368,7 +370,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-3));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -382,7 +384,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-6));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -396,7 +398,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -410,7 +412,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(16));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -424,7 +426,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(12));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -438,7 +440,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -452,7 +454,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -466,7 +468,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(5));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(7));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -480,7 +482,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(3));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -494,7 +496,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -508,7 +510,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10), 1.0);
 
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -522,7 +524,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10), 1.0);
 
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -535,7 +537,7 @@ public class KinematicsTester {
 		KinematicsTester kinematicsTester1 = new KinematicsTester();
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1.5), 1.0);
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -549,7 +551,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -562,7 +564,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(11.5));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -576,7 +578,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10.5));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -590,7 +592,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1.5), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -604,7 +606,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(0.25), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -618,7 +620,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1.25), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1.5));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -632,7 +634,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(0.25), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(0.5));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -646,7 +648,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(0.5), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1.5));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -660,7 +662,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(20), 1.0);
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
@@ -673,7 +675,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(16), 1.0);
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -687,7 +689,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(12), 1.0);
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -701,7 +703,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(20), 1.0);
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -715,7 +717,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(20), 1.0);
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -729,7 +731,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(5));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(7), 1.0);
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -743,7 +745,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(3), 1.0);
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -757,7 +759,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6), 1.0);
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -771,7 +773,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-11.5));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -785,7 +787,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10.5));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -799,7 +801,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1.5), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-20));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -815,7 +817,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-0.75));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1), 1.0);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1.5));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -831,7 +833,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(5));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-1));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		
 		checkTrajectoryPath(myPath, kinematicsTester1);
@@ -850,7 +852,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(3));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-3));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5,0.25);
 
 		
 		checkTrajectoryPath(myPath, kinematicsTester1);
@@ -878,7 +880,7 @@ public class KinematicsTester {
 				0.3450556942188484);
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(3.030929225820089),
 				0.8670591115037023);
-		m_kinematicsSimpler.createTrajectory(myPath, 5.0, 0.36515929984665874 / 0.5);
+		m_kinematicsSimpler.createTrajectory(myPath, 5.0, 0.36515929984665874 / 0.5,0.25);
 
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -907,7 +909,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(37.55188638372119),
 				4.5923302134967615);
 
-		m_kinematicsSimpler.createTrajectory(myPath, 5.3586511134357115, 1.4664421093524547);
+		m_kinematicsSimpler.createTrajectory(myPath, 5.3586511134357115, 1.4664421093524547,0.25);
 		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -923,7 +925,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10.002953802776918),
 				0.5079967207342222);
 
-		m_kinematicsSimpler.createTrajectory(myPath, 4.701044877204572, 1.9744750446466444);
+		m_kinematicsSimpler.createTrajectory(myPath, 4.701044877204572, 1.9744750446466444,0.25);
 
 		
 		checkTrajectoryPath(myPath, kinematicsTester1);
@@ -946,7 +948,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(36.90881735518415));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(32.079603084124635));
 
-		m_kinematicsSimpler.createTrajectory(myPath, 0.7382733504805985, 1.5809005848843993);
+		m_kinematicsSimpler.createTrajectory(myPath, 0.7382733504805985, 1.5809005848843993,0.25);
 
 		
 		checkTrajectoryPath(myPath, kinematicsTester1);
@@ -980,7 +982,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2.064709272940976),
 				0.9525062390771225);
 
-		m_kinematicsSimpler.createTrajectory(myPath, 0.9525062390771225, 2.6067592595296496);
+		m_kinematicsSimpler.createTrajectory(myPath, 0.9525062390771225, 2.6067592595296496,0.25);
 
 		
 		checkTrajectoryPath(myPath, kinematicsTester1);
@@ -1011,7 +1013,7 @@ public class KinematicsTester {
 				3.9343101113625583);
 		
 
-		m_kinematicsSimpler.createTrajectory(myPath, 4.080024724815174, 1.680675105230724);
+		m_kinematicsSimpler.createTrajectory(myPath, 4.080024724815174, 1.680675105230724,0.25);
 
 		
 		checkTrajectoryPath(myPath, kinematicsTester1);
@@ -1036,7 +1038,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6.004674385512021),
 				2.825519975231435);
 	
-		m_kinematicsSimpler.createTrajectory(myPath, 0.3929169767434745, 1.9171932478971456);
+		m_kinematicsSimpler.createTrajectory(myPath, 0.3929169767434745, 1.9171932478971456,0.25);
 
 		
 		checkTrajectoryPath(myPath, kinematicsTester1);
@@ -1051,7 +1053,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(1000));
 		
-		m_kinematicsSimpler.createTrajectory(myPath, (890), (221000));
+		m_kinematicsSimpler.createTrajectory(myPath, (890), (221000), 0.25);
 		printTrajectory(myPath);
 		checkTrajectoryPath(myPath, kinematicsTester1);
 
@@ -1100,7 +1102,7 @@ public class KinematicsTester {
 				} else {
 					directionConstant = -1.0;
 				}
-				if(Math.abs(setpoint - previousPoint.getm_X()) < maxAcceleration*m_kinematicsSimpler.getTrajectoryPointInterval()) {
+				if(Math.abs(setpoint - previousPoint.getm_X()) < maxAcceleration*KinematicsSimpler.getTrajectoryPointInterval()) {
 					if(setpoint > 0.0) {
 						setpoint += maxAcceleration*KinematicsSimpler.getTrajectoryPointInterval();
 					}else {
@@ -1115,7 +1117,7 @@ public class KinematicsTester {
 				
 			}
 			
-			m_kinematicsSimpler.createTrajectory(myPath, maxVelocity, maxAcceleration);
+			m_kinematicsSimpler.createTrajectory(myPath, maxVelocity, maxAcceleration,0.25);
 
 			printTrajectory(myPath);
 			System.out.println("Number: " + (i + 1));
@@ -1172,7 +1174,24 @@ public class KinematicsTester {
 			}
 		}
 	}
-
+	
+	private static void checkJerk(Path Key, KinematicsTester kinematicsTester)
+			throws InvalidJerkException {
+		InvalidJerkException invalidJerkException;
+		String errMessage;
+		for (int i = 0; i < Key.getTrajectoryVector().size(); i++) {
+			TrajectoryPoint currentPoint = Key.getTrajectoryVector().get(i);
+			if (currentPoint.m_jerk > (Key.getMaxJerk() * KinematicsSimpler.getTrajectoryPointInterval()
+					+ 0.1)
+					|| currentPoint.m_jerk < (-Key.getMaxJerk()
+							* KinematicsSimpler.getTrajectoryPointInterval() - 0.1)) {
+				errMessage = "The Current Jerk at time: " + currentPoint.m_timestamp
+						+ " is above the maximum jerk!";
+				invalidJerkException = kinematicsTester.new InvalidJerkException(errMessage);
+				throw invalidJerkException;
+			}
+		}
+	}
 	private static void checkFinalPosition(Path Key, KinematicsTester kinematicsTester) throws InvalidFinalPosition {
 		InvalidFinalPosition invalidFinalPosition;
 		String errMesage;
@@ -1318,6 +1337,14 @@ public class KinematicsTester {
 		private static final long serialVersionUID = 1L;
 
 	}
+	
+	public class InvalidJerkException extends Exception {
+		public InvalidJerkException(String errMessage) {
+			super(errMessage);
+		}
+
+		private static final long serialVersionUID = 1L;
+	}
 
 	public class InvalidAccelerationException extends Exception {
 		public InvalidAccelerationException(String errMessage) {
@@ -1353,7 +1380,7 @@ public class KinematicsTester {
 		private static final long serialVersionUID = 1L;
 
 	}
-
+	
 	private static void printTrajectory(Path Key) {
 		System.out.println("Trajectory Point: [vel, acc, pos, time]");
 		for (int i = 0; i < Key.getTrajectoryVector().size(); i++) {

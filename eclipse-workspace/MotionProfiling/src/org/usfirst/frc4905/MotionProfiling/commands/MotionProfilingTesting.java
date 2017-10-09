@@ -53,8 +53,9 @@ public class MotionProfilingTesting extends CommandGroup {
 			e.printStackTrace();
 		}
 		// CHECK TO SEE IF THE GRAPH'S CURRENT POSITION REPRESENTATION IS BEHIND THE PROJECTED POSITION.
-		Robot.kinematicsSimpler.createTrajectory(myFirstPath, (200), (100000));
+		Robot.kinematicsSimpler.createTrajectory(myFirstPath, (200), (100000),0.25);
 		
+
 		addSequential(new MoveWithEncoder(myFirstPath));
 	}
 }
