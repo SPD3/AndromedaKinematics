@@ -59,6 +59,7 @@ public class DriveTrain extends Subsystem {
 		setCommonMotorParameters(backRight);
 		setCommonMotorParameters(frontLeft);
 		setCommonMotorParameters(frontRight);
+		dTerm = 0.0;
 	}
 	
 	private class ResetEncoderPositions{
@@ -75,9 +76,9 @@ public class DriveTrain extends Subsystem {
 	public void setAllDriveControllers(double value) {
 		
 		backLeft.set(value);
-		backRight.set(value);
+		backRight.set(-value);
 		frontLeft.set(value);
-		frontRight.set(value);
+		frontRight.set(-value);
 		
 	}
 	
@@ -97,27 +98,50 @@ public class DriveTrain extends Subsystem {
 		m_resetEncoderPositions.frontLeft = frontLeft.get();
 	}
 	
-	private double m_positionPIDkp;
-	private double m_positionPIDki;
-	private double m_positionPIDkd;
-	private double m_positionPIDIAccum;
-	private double m_positionPIDPreviousError = Double.NaN;
+	private double m_positionPIDkp = 500.0;
+	private double m_positionPIDki = 50.0;
+	private double m_positionPIDkd = 1.0;
+	private double m_positionPIDIAccum = 0.0;
+	private double m_positionPIDPreviousPositionError = Double.NaN;
+	private double m_positionPIDPreviousPosition = Double.NaN;
+	private double iTerm = 0.0;
+	private double dTerm = 0.0;
+	private double pTerm = 0.0;
+	private double m_positionError;
+	private double m_positionPIDError;
+	public double getPositionPIDError() {return m_positionPIDError;}
+	public double getPreviousPositionError() {return m_positionPIDPreviousPositionError;}
+	public double getPositionError() {return m_positionError;}
+	public double getPTerm() {return pTerm;}
+	public double getITerm() {return iTerm;}
+	public double getDTerm() {return dTerm;}
 	public void initializePositionPID() {
-		m_positionPIDPreviousError = Double.NaN;
+		m_positionPIDPreviousPositionError = Double.NaN;
 		m_positionPIDIAccum = 0.0;
+		m_positionPIDPreviousPosition = Double.NaN;
 	}
 	public double getPositionPIDOut(double setpoint) {
-		double error = setpoint - getEncoderPosition();
-		if(m_positionPIDPreviousError == Double.NaN) {
-			m_positionPIDPreviousError = error;
-		}
+		m_positionError = setpoint - getEncoderPosition();
 		
-		m_positionPIDIAccum += error;
-		double pGain = error*m_positionPIDkp;
-		double iGain = m_positionPIDIAccum*m_positionPIDki;
-		double dGain = (error - m_positionPIDPreviousError)*m_positionPIDkd;
-		m_positionPIDPreviousError = error;
-		return pGain + iGain + dGain;
+		if(Double.isNaN(m_positionPIDPreviousPosition)) {
+			m_positionPIDPreviousPositionError = m_positionError;
+			dTerm = 0.0;
+		}else {
+			m_positionPIDPreviousPositionError = setpoint - m_positionPIDPreviousPosition;
+		}
+		m_positionPIDIAccum += m_positionError;
+		pTerm = m_positionError*m_positionPIDkp;
+		iTerm = m_positionPIDIAccum*m_positionPIDki;
+		if(m_positionError - m_positionPIDPreviousPositionError != 0) {
+			
+			dTerm = (m_positionError - m_positionPIDPreviousPositionError)*m_positionPIDkd;
+			
+		} else {
+			
+		}
+		m_positionPIDPreviousPosition = getEncoderPosition();
+		m_positionPIDError = m_positionError;
+		return pTerm + iTerm + dTerm;
 	}
 	
 	// Encoder PID controller
@@ -199,6 +223,8 @@ public class DriveTrain extends Subsystem {
 		backRight.changeControlMode(TalonControlMode.Speed);
 		frontRight.changeControlMode(TalonControlMode.Speed);
 		frontLeft.changeControlMode(TalonControlMode.Speed);
+		
+		backLeft.setStatusFrameRateMs(CANTalon.StatusFrameRate.Feedback, 1);
 	}
 	public void setControlModePercentVbus() {
 		setNormalPIDParameters();

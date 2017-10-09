@@ -76,9 +76,9 @@ public class DriveTrain extends Subsystem {
 	public void setAllDriveControllers(double value) {
 		
 		backLeft.set(value);
-		backRight.set(value);
+		backRight.set(-value);
 		frontLeft.set(value);
-		frontRight.set(value);
+		frontRight.set(-value);
 		
 	}
 	
@@ -98,9 +98,9 @@ public class DriveTrain extends Subsystem {
 		m_resetEncoderPositions.frontLeft = frontLeft.get();
 	}
 	
-	private double m_positionPIDkp = 500.0;
-	private double m_positionPIDki = 50.0;
-	private double m_positionPIDkd = 1.0;
+	private double m_positionPIDkp = 200.0;//500.0;
+	private double m_positionPIDki = 5.0;//50.0;
+	private double m_positionPIDkd = 100.0;//1.0;
 	private double m_positionPIDIAccum = 0.0;
 	private double m_positionPIDPreviousPositionError = Double.NaN;
 	private double m_positionPIDPreviousPosition = Double.NaN;
@@ -236,10 +236,10 @@ public class DriveTrain extends Subsystem {
 	
 	private void setNormalPIDParameters() {
 		//                 P    I  D  F                       Izone RampRate Profile
-		backLeft.setPID(   0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
-		backRight.setPID(  0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
-		frontLeft.setPID(  0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
-		frontRight.setPID( 0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		backLeft.setPID(   0.0, 0, 0, 1023.0*600.0/4096.0/800, 0,  0,       0);
+		backRight.setPID(  0.0, 0, 0, 1023.0*600.0/4096.0/800, 0,  0,       0);
+		frontLeft.setPID(  0.0, 0, 0, 1023.0*600.0/4096.0/800, 0,  0,       0);
+		frontRight.setPID( 0.0, 0, 0, 1023.0*600.0/4096.0/800, 0,  0,       0);
 		// Page 88 in CTR Documentation for f 
 		
 	}

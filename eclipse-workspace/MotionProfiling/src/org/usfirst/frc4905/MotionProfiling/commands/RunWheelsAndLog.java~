@@ -50,7 +50,6 @@ public class RunWheelsAndLog extends Command {
 	protected void initialize() {
 		
 		Vector<String> header = new Vector<String>();
-		System.out.println("Initialized");
 		header.add(new String("Velocities"));
 		header.add(new String("Acceleration"));
 		header.add(new String("Position"));
@@ -62,7 +61,7 @@ public class RunWheelsAndLog extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		Robot.driveTrain.setControlModePercentVbus();
-		Robot.driveTrain.setAllDriveControllers(1.0);
+		Robot.driveTrain.setAllDriveControllers(0.2);
 		
 		Vector<Double> entry = new Vector<Double>();
 		double currentTimeStamp = Timer.getFPGATimestamp();
@@ -96,7 +95,6 @@ public class RunWheelsAndLog extends Command {
 	// Called once after isFinished returns true
 	protected void end() {
 		Robot.driveTrain.setAllDriveControllers(0.0);
-		System.out.println("Average delta Time: " + m_totalDeltaTimeFromLastExecute/m_numberofDeltaTimesFromLastExecute);
 		Trace.getInstance().flushTraceFiles();
 		
 	}

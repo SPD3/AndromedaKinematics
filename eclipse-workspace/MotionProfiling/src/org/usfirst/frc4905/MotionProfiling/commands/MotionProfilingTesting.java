@@ -47,13 +47,13 @@ public class MotionProfilingTesting extends CommandGroup {
 		//Path myFirstPath = Robot.kinematics.new Path();
 		Path myFirstPath = Robot.kinematicsSimpler.new Path();
 		try {
-			Robot.kinematicsSimpler.addPointToPath(myFirstPath, Robot.kinematicsSimpler.new Point(100));
+			Robot.kinematicsSimpler.addPointToPath(myFirstPath, Robot.kinematicsSimpler.new Point(12));
 		} catch (InvalidDimentionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// CHECK TO SEE IF THE GRAPH'S CURRENT POSITION REPRESENTATION IS BEHIND THE PROJECTED POSITION.
-		Robot.kinematicsSimpler.createTrajectory(myFirstPath, (650), (150000));
+		Robot.kinematicsSimpler.createTrajectory(myFirstPath, (200), (100000));
 		
 		addSequential(new MoveWithEncoder(myFirstPath));
 	}

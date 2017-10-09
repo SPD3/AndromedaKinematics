@@ -80,6 +80,7 @@ public class MoveWithEncoder extends Command {
 		
 		header.addElement(new String("Error"));
 		header.add(new String("Zero"));
+		header.add(new String("D Term"));
 		Trace.getInstance().addTrace("MoveWithEncoderData", header);
 		m_header = header;
 		m_initialTimeStamp = Timer.getFPGATimestamp();
@@ -103,6 +104,7 @@ public class MoveWithEncoder extends Command {
 		entry.add(currentTrajectoryPoint.m_position);
 		entry.addElement((currentTrajectoryPoint.m_position-(Robot.driveTrain.getEncoderPosition() - m_initialEncoderPosition))*100);
 		entry.add(0.0);
+		entry.add(Robot.driveTrain.getDTerm()*10);
 		Trace.getInstance().addEntry("MoveWithEncoderData", entry);
 		Robot.driveTrain.setAllDriveControllers((nextTrajectoryPoint.m_currentVelocity) + m_PIDOut);
 		
