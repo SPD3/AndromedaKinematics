@@ -59,6 +59,7 @@ public class DriveTrain extends Subsystem {
 		setCommonMotorParameters(backRight);
 		setCommonMotorParameters(frontLeft);
 		setCommonMotorParameters(frontRight);
+		dTerm = 0.0;
 	}
 	
 	private class ResetEncoderPositions{
@@ -97,70 +98,50 @@ public class DriveTrain extends Subsystem {
 		m_resetEncoderPositions.frontLeft = frontLeft.get();
 	}
 	
-	private PIDController m_velocityPID;
-	
-	public PIDController getDeltaPositionPIDController() {
-		return m_velocityPID;
+	private double m_positionPIDkp = 500.0;
+	private double m_positionPIDki = 50.0;
+	private double m_positionPIDkd = 1.0;
+	private double m_positionPIDIAccum = 0.0;
+	private double m_positionPIDPreviousPositionError = Double.NaN;
+	private double m_positionPIDPreviousPosition = Double.NaN;
+	private double iTerm = 0.0;
+	private double dTerm = 0.0;
+	private double pTerm = 0.0;
+	private double m_positionError;
+	private double m_positionPIDError;
+	public double getPositionPIDError() {return m_positionPIDError;}
+	public double getPreviousPositionError() {return m_positionPIDPreviousPositionError;}
+	public double getPositionError() {return m_positionError;}
+	public double getPTerm() {return pTerm;}
+	public double getITerm() {return iTerm;}
+	public double getDTerm() {return dTerm;}
+	public void initializePositionPID() {
+		m_positionPIDPreviousPositionError = Double.NaN;
+		m_positionPIDIAccum = 0.0;
+		m_positionPIDPreviousPosition = Double.NaN;
 	}
-	
-	private class DeltaPositionPIDin implements PIDSource {
-
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-
-		}
-
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return PIDSourceType.kDisplacement;
-		}
-
-		@Override
-		public double pidGet() {
-			return getEncoderPosition();
-		}
-
-	}
-	private double m_velocityPIDOutput;
-	public double getDeltaPositionPIDOutput() {return m_velocityPIDOutput;}
-
-	private class DeltaPositionPIDout implements PIDOutput {
-
-		@Override
-		public void pidWrite(double output) {
-			m_velocityPIDOutput = output;
-		}
-
-	}
-	private double m_velocityKp = 0.0;
-	private double m_velocityKi = 0.0;
-	private double m_velocityKd = 0.0;
-	private double m_velocityKf = 0.0;
-	private double m_velocityTolerance = 0.1; 
-	
-	public void initializeDeltaPositionPID() {
-		DeltaPositionPIDin velocityPIDin = new DeltaPositionPIDin();
-		DeltaPositionPIDout velocityPIDout = new DeltaPositionPIDout();
+	public double getPositionPIDOut(double setpoint) {
+		m_positionError = setpoint - getEncoderPosition();
 		
-		m_velocityPID = new PIDController(m_velocityKp, m_velocityKi, m_velocityKd, m_velocityKf, velocityPIDin,
-				velocityPIDout);
-		
-		m_velocityPID.setAbsoluteTolerance(m_velocityTolerance);
-		LiveWindow.addActuator("DriveTrain", "DeltaPositionPID", m_velocityPID);
-	}
-
-	public void setPositionSetpoint(double velocitySetpoint) {
-		m_velocityPID.setSetpoint(velocitySetpoint);
-		m_velocityPID.enable();
-	}
-
-	public boolean isDoneDeltaPositionPID() {
-		return m_velocityPID.onTarget();
-	}
-
-	public void stopDeltaPositionPID() {
-		m_velocityPID.disable();
-
+		if(Double.isNaN(m_positionPIDPreviousPosition)) {
+			m_positionPIDPreviousPositionError = m_positionError;
+			dTerm = 0.0;
+		}else {
+			m_positionPIDPreviousPositionError = setpoint - m_positionPIDPreviousPosition;
+		}
+		m_positionPIDIAccum += m_positionError;
+		pTerm = m_positionError*m_positionPIDkp;
+		iTerm = m_positionPIDIAccum*m_positionPIDki;
+		if(m_positionError - m_positionPIDPreviousPositionError != 0) {
+			
+			dTerm = (m_positionError - m_positionPIDPreviousPositionError)*m_positionPIDkd;
+			
+		} else {
+			
+		}
+		m_positionPIDPreviousPosition = getEncoderPosition();
+		m_positionPIDError = m_positionError;
+		return pTerm + iTerm + dTerm;
 	}
 	
 	// Encoder PID controller
@@ -242,6 +223,8 @@ public class DriveTrain extends Subsystem {
 		backRight.changeControlMode(TalonControlMode.Speed);
 		frontRight.changeControlMode(TalonControlMode.Speed);
 		frontLeft.changeControlMode(TalonControlMode.Speed);
+		
+		backLeft.setStatusFrameRateMs(CANTalon.StatusFrameRate.Feedback, 1);
 	}
 	public void setControlModePercentVbus() {
 		setNormalPIDParameters();
@@ -253,10 +236,10 @@ public class DriveTrain extends Subsystem {
 	
 	private void setNormalPIDParameters() {
 		//                 P    I  D  F                       Izone RampRate Profile
-		backLeft.setPID(   0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
-		backRight.setPID(  0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
-		frontLeft.setPID(  0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
-		frontRight.setPID( 0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		backLeft.setPID(   0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		backRight.setPID(  0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		frontLeft.setPID(  0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		frontRight.setPID( 0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
 		// Page 88 in CTR Documentation for f 
 		
 	}

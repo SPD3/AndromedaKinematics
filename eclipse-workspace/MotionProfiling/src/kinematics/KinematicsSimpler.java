@@ -577,7 +577,7 @@ public class KinematicsSimpler {
 	 * This method uses the kinematic equation involving vi, vf, acceleration and
 	 * displacement to get distance traveled while accelerating
 	 */
-	private double getDistanceTraveledWhileAccelerating(double vi, double vf, double maxAcceleration) {
+	public double getDistanceTraveledWhileAccelerating(double vi, double vf, double maxAcceleration) {
 		double distance = Math.abs((Math.pow(vf, 2) - Math.pow(vi, 2)) / (2 * maxAcceleration));
 		return distance;
 	}
@@ -935,6 +935,36 @@ public class KinematicsSimpler {
 				return point;
 			}
 		}
+		return point;
+	}
+	
+	public TrajectoryPoint getTrajectoryPointWithInterpolation(Path Key, double deltaTime) {
+		double velocity = 0.0;
+		double position= 0.0;
+		double time = deltaTime;
+		double acceleration = 0.0;
+		Point setpoint =  Key.setpointVector.get(0);
+		System.out.println("setpoint.startCruisingDeltaTime: " + setpoint.startCruisingDeltaTime);
+		if(deltaTime <= setpoint.startCruisingDeltaTime) {
+			velocity = setpoint.vi + Key.maxAcceleration*deltaTime;
+			position = getDistanceTraveledWhileAccelerating(setpoint.vi, velocity, Key.maxAcceleration);
+		}else if(deltaTime > setpoint.startCruisingDeltaTime && deltaTime < Key.setpointVector.get(0).endCruisingDeltaTime) {
+			double distanceTraveledWhileAccelerating = getDistanceTraveledWhileAccelerating(setpoint.vi, setpoint.maxVelocity, Key.maxAcceleration);
+			double timeCruising = deltaTime - setpoint.startCruisingDeltaTime;
+			position = distanceTraveledWhileAccelerating + timeCruising*setpoint.maxVelocity;
+			velocity = setpoint.maxVelocity;
+		}else if(deltaTime <= setpoint.endDeltaTime) {
+			velocity = setpoint.maxVelocity - Key.maxAcceleration*(deltaTime - setpoint.endCruisingDeltaTime);
+			double distanceTraveledWhileAccelerating = getDistanceTraveledWhileAccelerating(setpoint.vi, setpoint.maxVelocity, Key.maxAcceleration);
+			double distanceTraveledWhileCruising = setpoint.maxVelocity*(setpoint.endCruisingDeltaTime-setpoint.startCruisingDeltaTime);
+			double distanceTraveledWhileDeccelerating = getDistanceTraveledWhileAccelerating(velocity, setpoint.maxVelocity, Key.maxAcceleration);
+			
+			position = distanceTraveledWhileAccelerating + distanceTraveledWhileCruising + distanceTraveledWhileDeccelerating;
+		}else {
+			velocity = 0.0;
+			position = setpoint.m_x;
+		}
+		TrajectoryPoint point = new TrajectoryPoint(velocity,acceleration,position,time);
 		return point;
 	}
 

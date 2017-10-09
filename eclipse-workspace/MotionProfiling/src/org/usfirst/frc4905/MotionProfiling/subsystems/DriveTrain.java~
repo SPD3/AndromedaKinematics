@@ -14,6 +14,8 @@ import org.usfirst.frc4905.MotionProfiling.RobotMap;
 import org.usfirst.frc4905.MotionProfiling.commands.*;
 
 import com.ctre.CANTalon;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -52,6 +54,13 @@ public class DriveTrain extends Subsystem {
 	double m_encoderPIDOutput = 0.0;
 	ResetEncoderPositions m_resetEncoderPositions = new ResetEncoderPositions();
 	
+	public DriveTrain(){
+		setCommonMotorParameters(backLeft);
+		setCommonMotorParameters(backRight);
+		setCommonMotorParameters(frontLeft);
+		setCommonMotorParameters(frontRight);
+	}
+	
 	private class ResetEncoderPositions{
 		double backLeft;
 		double backRight;
@@ -64,15 +73,21 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void setAllDriveControllers(double value) {
+		
 		backLeft.set(value);
 		backRight.set(value);
 		frontLeft.set(value);
 		frontRight.set(value);
-	}
-
-	public double getAllEncoderPosition() {
-		return backLeft.get() + backRight.get() + frontLeft.get() + frontRight.get();
 		
+	}
+	
+	public double getVelocity() {
+		return backLeft.getSpeed();
+		
+	}
+	
+	public double getEncoderPosition() {
+		return backLeft.getPosition();
 	}
 	
 	private void resetEncoderPosition(){
@@ -81,6 +96,30 @@ public class DriveTrain extends Subsystem {
 		m_resetEncoderPositions.frontRight = frontRight.get();
 		m_resetEncoderPositions.frontLeft = frontLeft.get();
 	}
+	
+	private double m_positionPIDkp;
+	private double m_positionPIDki;
+	private double m_positionPIDkd;
+	private double m_positionPIDIAccum;
+	private double m_positionPIDPreviousError = Double.NaN;
+	public void initializePositionPID() {
+		m_positionPIDPreviousError = Double.NaN;
+		m_positionPIDIAccum = 0.0;
+	}
+	public double getPositionPIDOut(double setpoint) {
+		double error = setpoint - getEncoderPosition();
+		if(m_positionPIDPreviousError == Double.NaN) {
+			m_positionPIDPreviousError = error;
+		}
+		
+		m_positionPIDIAccum += error;
+		double pGain = error*m_positionPIDkp;
+		double iGain = m_positionPIDIAccum*m_positionPIDki;
+		double dGain = (error - m_positionPIDPreviousError)*m_positionPIDkd;
+		m_positionPIDPreviousError = error;
+		return pGain + iGain + dGain;
+	}
+	
 	// Encoder PID controller
 	private PIDController m_moveWithEncoderPID;
 
@@ -102,7 +141,7 @@ public class DriveTrain extends Subsystem {
 
 		@Override
 		public double pidGet() {
-			return getAllEncoderPosition();
+			return getVelocity();
 		}
 
 	}
@@ -139,6 +178,44 @@ public class DriveTrain extends Subsystem {
 	public void stopMovingToEncoderRevolutions() {
 		m_moveWithEncoderPID.disable();
 
+	}
+	
+	private void setCommonMotorParameters(CANTalon motorController) {
+		motorController.reverseSensor(false);
+		motorController.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+		motorController.setPosition(0);
+		motorController.configNominalOutputVoltage(0, 0);
+		motorController.configPeakOutputVoltage(12.0, -12.0);
+		motorController.enableBrakeMode(true);
+		motorController.setVoltageRampRate(48);
+		motorController.changeControlMode(TalonControlMode.PercentVbus);
+		motorController.setProfile(0);
+		motorController.set(0);
+	}
+	
+	public void setControlModeSpeed() {
+		setNormalPIDParameters();
+		backLeft.changeControlMode(TalonControlMode.Speed);
+		backRight.changeControlMode(TalonControlMode.Speed);
+		frontRight.changeControlMode(TalonControlMode.Speed);
+		frontLeft.changeControlMode(TalonControlMode.Speed);
+	}
+	public void setControlModePercentVbus() {
+		setNormalPIDParameters();
+		backLeft.changeControlMode(TalonControlMode.PercentVbus);
+		backRight.changeControlMode(TalonControlMode.PercentVbus);
+		frontRight.changeControlMode(TalonControlMode.PercentVbus);
+		frontLeft.changeControlMode(TalonControlMode.PercentVbus);
+	}
+	
+	private void setNormalPIDParameters() {
+		//                 P    I  D  F                       Izone RampRate Profile
+		backLeft.setPID(   0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		backRight.setPID(  0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		frontLeft.setPID(  0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		frontRight.setPID( 0.0, 0, 0, 1023.0*600.0/4096.0/890, 0,  0,       0);
+		// Page 88 in CTR Documentation for f 
+		
 	}
 
 	public void initDefaultCommand() {

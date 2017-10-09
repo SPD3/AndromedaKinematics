@@ -11,7 +11,7 @@ public class KinematicsTester {
 	static KinematicsSimpler m_kinematicsSimpler = new KinematicsSimpler();
 
 	public static void main(String[] args) {
-
+		System.out.println("Number: " + m_kinematicsSimpler.getDistanceTraveledWhileAccelerating(0.0, 135.14000000000024, 150000));
 		try {
 			
 			createPositiveTrajectoryGreaterThanTheDistanceCoveredWhileAcceleratingCase();
