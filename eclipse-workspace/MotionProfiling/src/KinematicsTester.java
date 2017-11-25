@@ -12,7 +12,7 @@ import kinematics.KinematicsSimpler.TrajectoryPoint;
 public class KinematicsTester {
 
 	static KinematicsSimpler m_kinematicsSimpler = new KinematicsSimpler();
-	static double m_deltaTimeFromOriginalPoint = KinematicsSimpler.getTrajectoryPointInterval() * 0.00001;
+	static double m_deltaTimeFromOriginalPoint = 0.01;
 
 	public static void main(String[] args) {
 		try {
@@ -33,7 +33,11 @@ public class KinematicsTester {
 
 			createNegativeTrajectoryToPositiveTrajectoryGreaterThanTwiceTheDistanceCoveredWhileAcceleratingCase();
 
-			//createPositiveTrajectoryToNegativeTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+			createPositiveTrajectoryToNegativeTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+			
+			createNegativeTrajectoryToPositiveTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase();
+			
+			createPositiveTrajectoryToPositiveTrajectory2ndPointLessThanAllJerkDistanceCase();
 			/*
 			 * createNegativeTrajectoryToPositiveTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase
 			 * ();
@@ -201,7 +205,7 @@ public class KinematicsTester {
 
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(14));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
-
+		
 		checkTrajectoryPath(myPath, kinematicsTester);
 	}
 
@@ -215,6 +219,7 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(8));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
 
+		
 		checkTrajectoryPath(myPath, kinematicsTester1);
 	}
 
@@ -279,23 +284,8 @@ public class KinematicsTester {
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(14));
 		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-6));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
-
+		
 		checkTrajectoryPath(myPath, kinematicsTester);
-
-	}
-
-	private static void createPositiveTrajectoryToNegativeTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase()
-			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
-			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
-			InvalidJerkException {
-		Path myPath = m_kinematicsSimpler.new Path();
-		KinematicsTester kinematicsTester1 = new KinematicsTester();
-
-		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(14));
-		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(10));
-		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
-		printTrajectory(myPath);
-		checkTrajectoryPath(myPath, kinematicsTester1);
 
 	}
 
@@ -306,14 +296,253 @@ public class KinematicsTester {
 		Path myPath = m_kinematicsSimpler.new Path();
 		KinematicsTester kinematicsTester = new KinematicsTester();
 
-		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-10));
-		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-14));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
 		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
-		printTrajectory(myPath);
+		
 		checkTrajectoryPath(myPath, kinematicsTester);
 
 	}
+	
+	private static void createPositiveTrajectoryToNegativeTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
 
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(14));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		
+		
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createNegativeTrajectoryToPositiveTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-14));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-6));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createPositiveTrajectoryToPositiveTrajectory2ndPointLessThanAllJerkDistanceCase()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(14));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(12));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createNegativeTrajectoryToNegativeTrajectory2ndPointLessThanAllJerkDistanceCase()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-14));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-12));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createPositiveTrajectoryToNegativeTrajectory1stPointLessThanDistanceCoveredWhileAccelerating()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-12));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	private static void createNegativeTrajectoryToPositveTrajectory1stPointLessThanDistanceCoveredWhileAccelerating()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-6));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(12));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	private static void createPositiveTrajectoryToPositiveTrajectory1stPointLessThanDistanceCoveredWhileAccelerating()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(0));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createNegativeTrajectoryToNegativeTrajectory1stPointLessThanDistanceCoveredWhileAccelerating()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-6));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(0));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createPositiveTrajectoryToPositiveTrajectory1stPointLessThanDistanceCoveredWhileAccelerating2ndPointLessThanAllJerkDistances()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(6));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(4));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createNegativeTrajectoryToNegativeTrajectory1stPointLessThanDistanceCoveredWhileAccelerating2ndPointLessThanAllJerkDistances()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-6));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-4));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createPositiveTrajectoryToNegativeTrajectory1stPointLessThanAllJerkDistances()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-14));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createNegativeTrajectoryToPositiveTrajectory1stPointLessThanAllJerkDistances()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(14));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createPositiveTrajectoryToNegativeTrajectory1stPointLessThanAllJerkDistances2ndPointLessThanDistanceCoveredWhileAccelerating()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-4));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createNegaitveTrajectoryToPositiveTrajectory1stPointLessThanAllJerkDistances2ndPointLessThanDistanceCoveredWhileAccelerating()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(4));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createPositiveTrajectoryToPositiveTrajectory1stPointLessThanAllJerkDistances2ndPointLessThanAllJerkDistances()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(2));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(0));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
+	
+	private static void createNegativeTrajectoryToNegativeTrajectory1stPointLessThanAllJerkDistances2ndPointLessThanAllJerkDistances()
+			throws InvalidDimentionException, InvalidVelocityException, InvalidNextVelocityFromLastAcceleration,
+			InvalidAccelerationException, InvalidFinalPosition, InvalidTrajectoryLogic, NaNException,
+			InvalidJerkException {
+		Path myPath = m_kinematicsSimpler.new Path();
+		KinematicsTester kinematicsTester1 = new KinematicsTester();
+
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(-2));
+		m_kinematicsSimpler.addPointToPath(myPath, m_kinematicsSimpler.new Point(0));
+		m_kinematicsSimpler.createTrajectory(myPath, 2.0, 0.5, 0.25);
+		printTrajectory(myPath);
+		checkTrajectoryPath(myPath, kinematicsTester1);
+
+	}
 	/*
 	 * private static void
 	 * createNegativeTrajectoryToPositiveTrajectory2ndPointLessThanTwiceTheDistanceCoveredWhileAcceleratingCase
@@ -1505,15 +1734,7 @@ public class KinematicsTester {
 
 		for (int i = 0; i < originalTrajectoryPointsPath.size(); i++) {
 			TrajectoryPoint originalTrajectoryPoint = originalTrajectoryPointsPath.get(i);
-			TrajectoryPoint deltaBeforeOriginalTrajectoryPoint = m_kinematicsSimpler
-					.getTrajectoryPointWithInterpolation(Key,
-							originalTrajectoryPoint.m_timestamp - m_deltaTimeFromOriginalPoint);
-			TrajectoryPoint deltaAfterOriginalTrajectoryPoint = m_kinematicsSimpler.getTrajectoryPointWithInterpolation(
-					Key, originalTrajectoryPoint.m_timestamp + m_deltaTimeFromOriginalPoint);
-			double changeInVelocity = deltaAfterOriginalTrajectoryPoint.m_currentVelocity
-					- deltaBeforeOriginalTrajectoryPoint.m_currentVelocity;
-			double changeInTime = m_deltaTimeFromOriginalPoint * 2;
-			double calculatedAcceleration = changeInVelocity / changeInTime;
+			double calculatedAcceleration = getAccelerationOfPoint(Key, originalTrajectoryPoint);
 
 			accelerationCalculatedFromPositionVector.add(calculatedAcceleration);
 		}
@@ -1547,37 +1768,7 @@ public class KinematicsTester {
 		for (int i = 0; i < originalTrajectoryPointsPath.size(); i++) {
 			TrajectoryPoint originalTrajectoryPoint = originalTrajectoryPointsPath.get(i);
 
-			TrajectoryPoint deltaBeforeOriginalTrajectoryPoint = m_kinematicsSimpler
-					.getTrajectoryPointWithInterpolation(Key,
-							originalTrajectoryPoint.m_timestamp - (2 * m_deltaTimeFromOriginalPoint));
-			TrajectoryPoint deltaAfterOriginalTrajectoryPoint = m_kinematicsSimpler
-					.getTrajectoryPointWithInterpolation(Key, originalTrajectoryPoint.m_timestamp);
-			double changeInVelocity = deltaAfterOriginalTrajectoryPoint.m_currentVelocity
-					- deltaBeforeOriginalTrajectoryPoint.m_currentVelocity;
-			double changeInTime = m_deltaTimeFromOriginalPoint * 2;
-			double calculatedAcceleration = changeInVelocity / changeInTime;
-
-			accelerationCalculatedFromVelocityVector.add(calculatedAcceleration);
-
-			deltaBeforeOriginalTrajectoryPoint = m_kinematicsSimpler.getTrajectoryPointWithInterpolation(Key,
-					originalTrajectoryPoint.m_timestamp);
-			deltaAfterOriginalTrajectoryPoint = m_kinematicsSimpler.getTrajectoryPointWithInterpolation(Key,
-					originalTrajectoryPoint.m_timestamp + (2 * m_deltaTimeFromOriginalPoint));
-			changeInVelocity = deltaAfterOriginalTrajectoryPoint.m_currentVelocity
-					- deltaBeforeOriginalTrajectoryPoint.m_currentVelocity;
-			changeInTime = m_deltaTimeFromOriginalPoint * 2;
-			calculatedAcceleration = changeInVelocity / changeInTime;
-
-			accelerationCalculatedFromVelocityVector.add(calculatedAcceleration);
-
-		}
-
-		for (int i = 0; i < accelerationCalculatedFromVelocityVector.size(); i += 2) {
-			double deltaBeforeAcceleration = accelerationCalculatedFromVelocityVector.get(i);
-			double deltaAfterAcceleration = accelerationCalculatedFromVelocityVector.get(i + 1);
-			double changeInAcceleration = deltaAfterAcceleration - deltaBeforeAcceleration;
-			double changeInTime = m_deltaTimeFromOriginalPoint * 2;
-			double calculatedJerk = changeInAcceleration / changeInTime;
+			double calculatedJerk = getJerkOfPoint(Key, originalTrajectoryPoint);
 
 			jerkCalculatedFromCalculatedAccelerationVector.add(calculatedJerk);
 		}
@@ -1596,7 +1787,7 @@ public class KinematicsTester {
 			throws InvalidTrajectoryLogic {
 		InvalidTrajectoryLogic invalidTrajectoryLogic;
 		String errMessage;
-		int currentTrajectoryPointIndex = 0;
+		double currentTrajectoryPointIndex = 0;
 		for (int i = 0; i < Key.getSetpointVector().size(); i++) {
 			Point setpoint = Key.getSetpointVector().get(i);
 			currentTrajectoryPointIndex += setpoint.getEndDeltaTime();
@@ -1649,6 +1840,44 @@ public class KinematicsTester {
 					invalidTrajectoryLogic = kinematicsTester.new InvalidTrajectoryLogic(errMessage);
 					throw invalidTrajectoryLogic;
 				}
+				double calculatedAcceleration = getAccelerationOfPoint(Key, trajectoryPoint);
+				TrajectoryPoint nextPoint = m_kinematicsSimpler.getTrajectoryPointWithInterpolation(Key, trajectoryPoint.m_timestamp + m_deltaTimeFromOriginalPoint);
+				double nextAcceleration = getAccelerationOfPoint(Key, nextPoint);
+				double currentJerk = getJerkOfPoint(Key, trajectoryPoint.m_timestamp);
+				try {
+				if(Key.getSetpointVector().get(0).getm_X() == 14.0 && Key.getSetpointVector().get(0
+						).getm_X() == 6.0) {
+					System.out.println("");
+					System.out.println("calculatedAcceleration: " + calculatedAcceleration);
+					System.out.println("setpoint.getaf(): " + setpoint.getaf());
+					System.out.println("nextAcceleration: " + nextAcceleration);
+					System.out.println("trajectoryPoint.m_position: " + trajectoryPoint.m_position);
+					System.out.println("nextPoint.m_position: " + nextPoint.m_position);
+					System.out.println("currentJerk: " + currentJerk);
+					System.out.println("trajectoryPoint.m_timestamp: " + trajectoryPoint.m_timestamp);
+				}
+				}catch(ArrayIndexOutOfBoundsException a) {
+					
+				}
+				if(Math.abs(Math.abs(calculatedAcceleration) - setpoint.getaf()) > 0.0001) {
+					errMessage = "The point at time: " + trajectoryPoint.m_timestamp
+							+ " is a point where the calculated acceleration and the final acceleration are not equal";
+					invalidTrajectoryLogic = kinematicsTester.new InvalidTrajectoryLogic(errMessage);
+					throw invalidTrajectoryLogic;
+				}
+				if(Math.abs(calculatedAcceleration - nextAcceleration) > 0.01) {
+					errMessage = "The point at time: " + trajectoryPoint.m_timestamp
+							+ " is a point where setpoints are switching and the accelerations are messed up";
+					invalidTrajectoryLogic = kinematicsTester.new InvalidTrajectoryLogic(errMessage);
+					throw invalidTrajectoryLogic;
+				}
+				if(currentJerk > Key.getMaxJerk()) {
+					errMessage = "The point at time: " + trajectoryPoint.m_timestamp
+							+ " is a point where the jerk exceeds the maximum jerk";
+					invalidTrajectoryLogic = kinematicsTester.new InvalidTrajectoryLogic(errMessage);
+					throw invalidTrajectoryLogic;
+				}
+
 			}
 		}
 	}
@@ -1713,6 +1942,51 @@ public class KinematicsTester {
 		private static final long serialVersionUID = 1L;
 
 	}
+	
+	private static double getAccelerationOfPoint(Path Key, double originalTrajectoryPointTime) {
+		TrajectoryPoint trajectoryPoint = m_kinematicsSimpler.new TrajectoryPoint(0.0,0.0,originalTrajectoryPointTime);
+		return getAccelerationOfPoint(Key, trajectoryPoint);
+	}
+	
+	private static double getAccelerationOfPoint(Path Key, TrajectoryPoint originalTrajectoryPoint) {
+		TrajectoryPoint deltaBeforeOriginalTrajectoryPoint = m_kinematicsSimpler
+				.getTrajectoryPointWithInterpolation(Key,
+						originalTrajectoryPoint.m_timestamp - m_deltaTimeFromOriginalPoint);
+		TrajectoryPoint deltaAfterOriginalTrajectoryPoint = m_kinematicsSimpler.getTrajectoryPointWithInterpolation(
+				Key, originalTrajectoryPoint.m_timestamp + m_deltaTimeFromOriginalPoint);
+		double changeInVelocity = deltaAfterOriginalTrajectoryPoint.m_currentVelocity
+				- deltaBeforeOriginalTrajectoryPoint.m_currentVelocity;
+		double changeInTime = m_deltaTimeFromOriginalPoint * 2;
+		double calculatedAcceleration = changeInVelocity / changeInTime;
+
+		return calculatedAcceleration;
+	}
+	private static double getJerkOfPoint(Path Key, double originalTrajectoryPointTime, boolean testMode) {
+		TrajectoryPoint trajectoryPoint = m_kinematicsSimpler.new TrajectoryPoint(0.0,0.0,originalTrajectoryPointTime);
+		return getJerkOfPoint(Key, trajectoryPoint, testMode);
+	}
+	private static double getJerkOfPoint(Path Key, double originalTrajectoryPointTime) {
+		TrajectoryPoint trajectoryPoint = m_kinematicsSimpler.new TrajectoryPoint(0.0,0.0,originalTrajectoryPointTime);
+		return getJerkOfPoint(Key, trajectoryPoint);
+	}
+	private static double getJerkOfPoint(Path Key, TrajectoryPoint originalTrajectoryPoint) {
+		return getJerkOfPoint(Key, originalTrajectoryPoint, false);
+	}
+		
+	private static double getJerkOfPoint(Path Key, TrajectoryPoint originalTrajectoryPoint, boolean testMode) {
+		double deltaBeforeAcceleration = getAccelerationOfPoint(Key,originalTrajectoryPoint.m_timestamp - m_deltaTimeFromOriginalPoint);
+		double deltaAfterAcceleration = getAccelerationOfPoint(Key, originalTrajectoryPoint.m_timestamp + m_deltaTimeFromOriginalPoint);
+		if (testMode) {
+			System.out.println("");
+			System.out.println("deltaBeforeAcceleration: " + deltaBeforeAcceleration);
+			System.out.println("deltaAfterAcceleration: " + deltaAfterAcceleration);
+			System.out.println("");
+		}
+		double changeInAcceleration = deltaAfterAcceleration - deltaBeforeAcceleration;
+		double changeInTime = m_deltaTimeFromOriginalPoint * 2;
+		double calculatedJerk = changeInAcceleration / changeInTime;
+		return calculatedJerk;
+	}
 
 	private static void printTrajectory(Path Key) {
 		System.out.println("Trajectory Point: [vel, acel, jerk, pos, time]");
@@ -1747,10 +2021,7 @@ public class KinematicsTester {
 					+ ", " + currentJerk + ", " + currentPoint.m_position + ", " + currentPoint.m_timestamp + "]");
 
 		}
-		TrajectoryPoint testPoint = m_kinematicsSimpler.getTrajectoryPointWithInterpolation(Key, 13);
-		// System.out.println("testPoint: " + testPoint.m_position);
-		// System.out.println("endDeltatTimeFromStartOfPath: " +
-		// endDeltatTimeFromStartOfPath);
+		
 		System.out.print("The Setpoints are: ");
 		for (int i = 0; i < Key.getSetpointVector().size(); i++) {
 			if (i == 0) {
@@ -1759,7 +2030,17 @@ public class KinematicsTester {
 				System.out.print("		   " + Key.getSetpointVector().get(i).getm_X());
 			}
 			System.out.println(" MaxV " + Key.getSetpointVector().get(i).getMaxVelocity());
+			
 		}
+		System.out.println("");
+		/*for(int i = 0; i < 20; i++) {
+			TrajectoryPoint point = m_kinematicsSimpler.getTrajectoryPointWithInterpolation(Key, 12.0 + i/20.0);
+			double acceleration = getAccelerationOfPoint(Key, point);
+			System.out.println("");
+			System.out.println("The time is: " + (12.0 + i/20.0));
+			System.out.println("acceleration: " + acceleration);
+			System.out.println("");
+		}*/
 
 	}
 
